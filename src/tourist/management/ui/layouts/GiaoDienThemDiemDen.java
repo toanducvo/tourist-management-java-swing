@@ -42,13 +42,13 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
         pnlGiaoDienThemDiemDenNourth.setPreferredSize(new Dimension(600, 100));
         pnlGiaoDienThemDiemDen.add(pnlGiaoDienThemDiemDenNourth, BorderLayout.NORTH);
         pnlGiaoDienThemDiemDenNourth.add(new JLabel("Mã điểm đến"));
-        txtmaDiemDen = new JTextField(43);
+        txtmaDiemDen = new JTextField(60);
         pnlGiaoDienThemDiemDenNourth.add(txtmaDiemDen);
         pnlGiaoDienThemDiemDenNourth.add(new JLabel("Tên điểm đến"));
-        txttenDiemDen = new JTextField(43);
+        txttenDiemDen = new JTextField(60);
         pnlGiaoDienThemDiemDenNourth.add(txttenDiemDen);
         pnlGiaoDienThemDiemDenNourth.add(new JLabel("Tên tỉnh"));
-        txttenTinh = new JTextField(46);
+        txttenTinh = new JTextField(63);
         pnlGiaoDienThemDiemDenNourth.add(txttenTinh);
 
         JPanel pnlGiaoDienThemDiemDenCenter = new JPanel(new BorderLayout());
