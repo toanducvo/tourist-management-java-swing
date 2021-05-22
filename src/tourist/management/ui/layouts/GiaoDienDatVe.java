@@ -120,7 +120,7 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         pnlCen.setBorder(BorderFactory.createTitledBorder("Danh Sách Chuyến Đi"));
 
         pnlCen.setLayout(new BoxLayout(pnlCen, BoxLayout.PAGE_AXIS));
-        String[] columnName = {"Mã Chuyến Đi", "Điểm Xuất Phát", "Điểm Đến", "Ngày Giờ Đi", "Ngày Giờ Đến", "Biển Số Xe"};
+        String[] columnName = {"Mã chuyến Đi", "Điểm xuất phát", "Điểm đến", "Ngày giờ đi", "Ngày giờ đến", "Biển số xe"};
 
         //table
         model = new DefaultTableModel(columnName, 0);
