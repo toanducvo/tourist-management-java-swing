@@ -1,6 +1,6 @@
 package tourist.management.application;
 
-import tourist.management.ui.views.DangNhap;
+import tourist.management.ui.windows.DangNhap;
 
 import javax.swing.*;
 

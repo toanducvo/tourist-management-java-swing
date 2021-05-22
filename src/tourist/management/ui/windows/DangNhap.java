@@ -1,4 +1,4 @@
-package tourist.management.ui.views;
+package tourist.management.ui.windows;
 
 import javax.swing.*;
 import java.awt.*;

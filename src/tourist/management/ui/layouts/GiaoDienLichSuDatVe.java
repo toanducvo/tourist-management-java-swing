@@ -1,4 +1,4 @@
-package tourist.management.ui.components;
+package tourist.management.ui.layouts;
 
 import tourist.management.dao.LichSuDatVeDAO;
 import tourist.management.database.ConnectDB;
