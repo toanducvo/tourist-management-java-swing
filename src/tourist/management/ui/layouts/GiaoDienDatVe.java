@@ -163,6 +163,9 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
             datVeHandler();
             xoaRongHandler();
         }
+        else if (o.equals(btnXoaRong)){
+            xoaRongHandler();
+        }
     }
 
     private void datVeHandler() {
@@ -223,7 +226,6 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         txtCMND.setText("");
         txtSoDienThoai.setText("");
         txtNgaySinh.setText("");
-        groupGioiTinh.clearSelection();
         txtMaKhachHang.requestFocus();
     }
 }
