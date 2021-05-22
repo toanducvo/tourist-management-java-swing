@@ -59,6 +59,8 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
         modelDiemDen = new DefaultTableModel(header, 0);
         tableDiemDen = new JTable(modelDiemDen);
         pnlGiaoDienThemDiemDenCenter.add(new JScrollPane(tableDiemDen), BorderLayout.CENTER);
+        tableDiemDen.setShowGrid(false);
+        tableDiemDen.setRowHeight(20);
 
         for (DiemDen diemDen : diemDenDAO.getAllDiemDen()) {
             modelDiemDen.addRow(new Object[]{

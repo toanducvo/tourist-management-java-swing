@@ -62,6 +62,8 @@ public class GiaoDienLichSuDatVe extends JFrame implements MouseListener, Action
         };
 
         table.getColumnModel().getColumn(3).setCellRenderer(tableCellRenderer);
+        table.setShowGrid(false);
+        table.setRowHeight(20);
 
         JSplitPane spl = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         spl.setBottomComponent(new JScrollPane(table));

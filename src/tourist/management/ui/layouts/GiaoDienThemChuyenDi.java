@@ -73,6 +73,8 @@ public class GiaoDienThemChuyenDi implements ActionListener {
         modelChuyenDi = new DefaultTableModel(header, 0);
         tableChuyenDi = new JTable(modelChuyenDi);
         pnlGiaoDienThemChuyenDiCenter.add(new JScrollPane(tableChuyenDi), BorderLayout.CENTER);
+        tableChuyenDi.setShowGrid(false);
+        tableChuyenDi.setRowHeight(20);
 
         List<ChuyenDi> danhSachChuyenDi = chuyenDiDAO.getAllChuyenDi();
 

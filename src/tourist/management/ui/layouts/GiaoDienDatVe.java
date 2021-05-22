@@ -125,7 +125,7 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         table = new JTable(model);
         table.setShowGrid(false);
         table.setRowHeight(20);
-        
+
         JScrollPane TablePane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         pnlCen.add(TablePane);

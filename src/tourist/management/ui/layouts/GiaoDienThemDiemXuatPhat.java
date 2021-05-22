@@ -58,6 +58,8 @@ public class GiaoDienThemDiemXuatPhat implements MouseListener, ActionListener {
         modelDiemXuatPhat = new DefaultTableModel(header, 0);
         tableDiemXuatPhat = new JTable(modelDiemXuatPhat);
         pnlGiaoDienThemDiemXuatPhatCenter.add(new JScrollPane(tableDiemXuatPhat), BorderLayout.CENTER);
+        tableDiemXuatPhat.setShowGrid(false);
+        tableDiemXuatPhat.setRowHeight(20);
 
         for (DiemXuatPhat diemXuatPhat : diemXuatPhatDAO.getAllDiemXuatPhat()) {
             modelDiemXuatPhat.addRow(new Object[]{
