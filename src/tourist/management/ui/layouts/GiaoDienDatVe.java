@@ -101,7 +101,7 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         pnlNor_bottom.add(txtCMND = new JTextField(63));
         pnlNor_bottom.add(lblSoDienThoai = new JLabel("SĐT"));
         pnlNor_bottom.add(txtSoDienThoai = new JTextField(21));
-        pnlNor_bottom.add(lblNgaySinh = new JLabel("Ngày Sinh"));
+        pnlNor_bottom.add(lblNgaySinh = new JLabel("Ngày sinh"));
         pnlNor_bottom.add(txtNgaySinh = new JTextField(18));
         pnlNor_bottom.add(lblGioiTinh = new JLabel("Giới tính"));
         pnlNor_bottom.add(radNam = new JRadioButton("Nam"));
@@ -123,6 +123,9 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         //table
         model = new DefaultTableModel(columnName, 0);
         table = new JTable(model);
+        table.setShowGrid(false);
+        table.setRowHeight(20);
+        
         JScrollPane TablePane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         pnlCen.add(TablePane);
@@ -180,7 +183,6 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
 
         int row = table.getSelectedRow();
 
-        // lỗi
         if (row != -1) {
             String maNhanVien = "NV000001";
             KhachHang khachHang = new KhachHang(
