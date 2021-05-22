@@ -19,7 +19,9 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class GiaoDienDatVe extends JFrame implements ActionListener {
     private final JPanel pnlNor;
@@ -164,26 +166,66 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         Object o = e.getSource();
         if (o.equals(btnThem)) {
             datVeHandler();
-            xoaRongHandler();
         } else if (o.equals(btnXoaRong)) {
             xoaRongHandler();
         }
     }
 
     private void datVeHandler() {
-        String maKhachHang = txtMaKhachHang.getText();
-        String hoKhachhang = txtHoKhachHang.getText();
-        String tenKhachhang = txtTenKhachHang.getText();
-        boolean gioiTinh = radNu.isSelected();
-        LocalDate ngaySinh = LocalDate.parse(txtNgaySinh.getText(), dateTimeFormatter);
-        String soCMND = txtCMND.getText();
-        String soDienThoai = txtSoDienThoai.getText();
-        String email = txtEmail.getText();
-
-
         int row = table.getSelectedRow();
-
         if (row != -1) {
+            String maKhachHang = txtMaKhachHang.getText();
+            String hoKhachhang = txtHoKhachHang.getText();
+            String tenKhachhang = txtTenKhachHang.getText();
+            boolean gioiTinh = radNu.isSelected();
+            LocalDate ngaySinh;
+            String soCMND = txtCMND.getText();
+            String soDienThoai = txtSoDienThoai.getText();
+            String email = txtEmail.getText();
+
+            try {
+                ngaySinh = LocalDate.parse(txtNgaySinh.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            } catch (DateTimeParseException dateTimeParseException) {
+                JOptionPane.showMessageDialog(this, "Ngày sinh không hợp lệ");
+                txtNgaySinh.selectAll();
+                txtNgaySinh.requestFocus();
+                return;
+            }
+
+            if (!Pattern.matches("^(kh|KH)\\d{6}", maKhachHang)) {
+                JOptionPane.showMessageDialog(this, "Mã khách hàng không hợp lệ, vui lòng kiểm tra lại!");
+                txtMaKhachHang.selectAll();
+                txtMaKhachHang.requestFocus();
+                return;
+            }
+//            else if (!Pattern.matches("[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s\\W]",hoKhachhang)){
+//                JOptionPane.showMessageDialog(this,"Họ khách hàng không hợp lệ, vui lòng kiểm tra lại!");
+//                txtHoKhachHang.selectAll();
+//                txtHoKhachHang.requestFocus();
+//                return;
+//            }
+//            else if (!Pattern.matches("[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s\\W]",tenKhachhang)){
+//                JOptionPane.showMessageDialog(this,"Tên khách hàng không hợp lệ, vui lòng kiểm tra lại!");
+//                txtTenKhachHang.selectAll();
+//                txtTenKhachHang.requestFocus();
+//                return;
+//            }
+            else if (!email.isBlank() && !Pattern.matches("^(\\w{1,})@(\\w{1,})(\\.(\\w{2,})){1,}", email)) {
+                JOptionPane.showMessageDialog(this, "Email không hợp lệ, vui lòng kiểm tra lại!");
+                txtSoDienThoai.selectAll();
+                txtSoDienThoai.requestFocus();
+                return;
+            } else if (!Pattern.matches("\\d{12}|\\d{9}", soCMND)) {
+                JOptionPane.showMessageDialog(this, "Số CMND không hợp lệ, vui lòng kiểm tra lại!");
+                txtCMND.selectAll();
+                txtCMND.requestFocus();
+                return;
+            } else if (!Pattern.matches("^(0)(96|97|98|32|33|34|35|36|37|38|39|88|91|94|83|84|85|86|81|82|89|90|93|70|79|77|76|78|92|56|58|99|59){1}\\d{7}", soDienThoai)) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ, vui lòng kiểm tra lại!");
+                txtSoDienThoai.selectAll();
+                txtSoDienThoai.requestFocus();
+                return;
+            }
             String maNhanVien = "NV000001";
             KhachHang khachHang = new KhachHang(
                     maKhachHang,
@@ -214,6 +256,7 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(this, "Trùng");
                 }
             }
+            xoaRongHandler();
         } else {
             JOptionPane.showMessageDialog(this, "Chưa chọn chuyến đi!");
         }
@@ -228,5 +271,6 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         txtSoDienThoai.setText("");
         txtNgaySinh.setText("");
         txtMaKhachHang.requestFocus();
+        table.clearSelection();
     }
 }
