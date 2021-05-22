@@ -30,18 +30,18 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
     private final JPanel pnlSou;
     private final JButton btnThem;
     private final JButton btnXoaRong;
-    private final JLabel lblMaKH;
-    private final JTextField txtMaKH;
-    private final JLabel lblHoKH;
-    private final JTextField txtHoKH;
-    private final JLabel lblTenKH;
-    private final JTextField txtTenKH;
+    private final JLabel lblMaKhachHang;
+    private final JTextField txtMaKhachHang;
+    private final JLabel lblHoKhachHang;
+    private final JTextField txtHoKhachHang;
+    private final JLabel lblTenKhachHang;
+    private final JTextField txtTenKhachHang;
     private final JLabel lblEmail;
     private final JTextField txtEmail;
     private final JLabel lblCMND;
     private final JTextField txtCMND;
-    private final JLabel lblSDT;
-    private final JTextField txtSDT;
+    private final JLabel lblSoDienThoai;
+    private final JTextField txtSoDienThoai;
     private final JLabel lblNgaySinh;
     private final JTextField txtNgaySinh;
     private final JLabel lblGioiTinh;
@@ -89,18 +89,18 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         pnlNor.add(pnlNor_bottom = new JPanel());
         pnlNor.add(pnlNor_bottom, BorderLayout.SOUTH);
         pnlNor_bottom.setPreferredSize(new Dimension(570, 180));
-        pnlNor_bottom.add(lblMaKH = new JLabel("Mã Khách Hàng:"));
-        pnlNor_bottom.add(txtMaKH = new JTextField(40));
-        pnlNor_bottom.add(lblHoKH = new JLabel("Họ Khách Hàng:"));
-        pnlNor_bottom.add(txtHoKH = new JTextField(15));
-        pnlNor_bottom.add(lblTenKH = new JLabel("Tên Khách Hàng:"));
-        pnlNor_bottom.add(txtTenKH = new JTextField(15));
+        pnlNor_bottom.add(lblMaKhachHang = new JLabel("Mã Khách Hàng:"));
+        pnlNor_bottom.add(txtMaKhachHang = new JTextField(40));
+        pnlNor_bottom.add(lblHoKhachHang = new JLabel("Họ Khách Hàng:"));
+        pnlNor_bottom.add(txtHoKhachHang = new JTextField(15));
+        pnlNor_bottom.add(lblTenKhachHang = new JLabel("Tên Khách Hàng:"));
+        pnlNor_bottom.add(txtTenKhachHang = new JTextField(15));
         pnlNor_bottom.add(lblEmail = new JLabel("Email:"));
         pnlNor_bottom.add(txtEmail = new JTextField(45));
         pnlNor_bottom.add(lblCMND = new JLabel("CMND:"));
         pnlNor_bottom.add(txtCMND = new JTextField(20));
-        pnlNor_bottom.add(lblSDT = new JLabel("SĐT:"));
-        pnlNor_bottom.add(txtSDT = new JTextField(21));
+        pnlNor_bottom.add(lblSoDienThoai = new JLabel("SĐT:"));
+        pnlNor_bottom.add(txtSoDienThoai = new JTextField(21));
         pnlNor_bottom.add(lblNgaySinh = new JLabel("Ngày Sinh:"));
         pnlNor_bottom.add(txtNgaySinh = new JTextField(28));
         pnlNor_bottom.add(lblGioiTinh = new JLabel("Giới Tính:"));
@@ -148,7 +148,6 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         pnlSou.add(btnThem = new JButton("Đặt vé"));
         pnlSou.add(btnXoaRong = new JButton("Xóa rỗng"));
 
-
         btnThem.addActionListener(this);
     }
 
@@ -158,40 +157,44 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Object o = e.getSource();
         if (o.equals(btnThem)) {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-            String maKhachHang = txtMaKH.getText();
-            String hoKhachhang = txtHoKH.getText();
-            String tenKhachhang = txtTenKH.getText();
+            String maKhachHang = txtMaKhachHang.getText();
+            String hoKhachhang = txtHoKhachHang.getText();
+            String tenKhachhang = txtTenKhachHang.getText();
             boolean gioiTinh = radNu.isSelected();
             LocalDate ngaySinh = LocalDate.parse(txtNgaySinh.getText(), dateTimeFormatter);
             String soCMND = txtCMND.getText();
-            String soDienThoai = txtSDT.getText();
+            String soDienThoai = txtSoDienThoai.getText();
             String email = txtEmail.getText();
-
             KhachHang khachHang = new KhachHang(maKhachHang, hoKhachhang, tenKhachhang, gioiTinh, ngaySinh, soCMND, soDienThoai, email);
-
             int row = table.getSelectedRow();
-            String maChuyenDi = String.valueOf(table.getValueAt(row, 1));
-            String maNhanVien = "NV000001";
-            LocalDateTime ngayDatVe = LocalDateTime.now();
-            DatVe datVe = new DatVe(khachHang, new ChuyenDi(maChuyenDi), new NhanVien(maNhanVien), ngayDatVe);
 
+            // lỗi
+            if (row != -1) {
+                String maChuyenDi = table.getValueAt(row, 1).toString();
+                String maNhanVien = "NV000001";
+                LocalDateTime ngayDatVe = LocalDateTime.now();
+                DatVe datVe = new DatVe(khachHang, new ChuyenDi(maChuyenDi), new NhanVien(maNhanVien), ngayDatVe);
 
-            try {
-                khachHangDAO.createKhachHang(khachHang);
-            } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
-                JOptionPane.showMessageDialog(this, "Khách hàng này đã có thông tin!");
+                try {
+                    khachHangDAO.createKhachHang(khachHang);
+                } catch (SQLIntegrityConstraintViolationException ignored) {
+                }
+                finally {
+                    try {
+                        datVeDAO.createDatVe(datVe);
+                        JOptionPane.showMessageDialog(this, "Đặt vé thành công!");
+                    } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
+                        JOptionPane.showMessageDialog(this, "Trùng");
+                    }
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Chưa chọn chuyến đi!");
             }
 
-            try {
-                datVeDAO.createDatVe(datVe);
-                JOptionPane.showMessageDialog(this, "Đặt vé thành công!");
-            } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
-                JOptionPane.showMessageDialog(this, "Trùng");
-            }
         }
     }
 }
