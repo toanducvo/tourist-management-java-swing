@@ -247,7 +247,7 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
             try {
                 khachHangDAO.createKhachHang(khachHang);
             } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
-                JOptionPane.showMessageDialog(this, "Trùng");
+//                JOptionPane.showMessageDialog(this, "Trùng");
             } finally {
                 try {
                     datVeDAO.createDatVe(datVe);
