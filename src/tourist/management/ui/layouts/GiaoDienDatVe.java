@@ -162,8 +162,7 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         if (o.equals(btnThem)) {
             datVeHandler();
             xoaRongHandler();
-        }
-        else if (o.equals(btnXoaRong)){
+        } else if (o.equals(btnXoaRong)) {
             xoaRongHandler();
         }
     }
