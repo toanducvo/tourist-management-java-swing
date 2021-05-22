@@ -66,23 +66,23 @@ public class DangNhap extends JFrame {
         btnDangNhap.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = txtTenDangNhap.getText();
-                char[] password = txtMatKhau.getPassword();
-                if (!Pattern.matches("^(nv|NV)\\d{6}", username)) {
+                String tenDangNhap = txtTenDangNhap.getText();
+                char[] matKhau = txtMatKhau.getPassword();
+                if (!Pattern.matches("^(nv|NV)\\d{6}", tenDangNhap)) {
                     JOptionPane.showMessageDialog(pnlDangNhap, "Tên đăng nhập không hợp lệ");
                     txtMatKhau.setText("");
                     txtTenDangNhap.selectAll();
                     txtTenDangNhap.requestFocus();
                     return;
                 }
-                if (!Pattern.matches("(\\d|\\W|\\w){8,}", String.copyValueOf(password))) {
+                if (!Pattern.matches("(\\d|\\W|\\w){8,}", String.copyValueOf(matKhau))) {
                     JOptionPane.showMessageDialog(pnlDangNhap, "Mật khẩu không hợp lệ");
                     txtMatKhau.setText("");
                     txtMatKhau.requestFocus();
                     return;
                 }
-                if (String.copyValueOf(password).equals("12345678")) {
-                    new GiaoDienChinh(username.toUpperCase()).setVisible(true);
+                if (String.copyValueOf(matKhau).equals("12345678")) {
+                    new GiaoDienChinh(tenDangNhap.toUpperCase()).setVisible(true);
                     setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(pnlDangNhap, "Tên đăng nhập hoặc Mật khẩu không hợp lệ!");

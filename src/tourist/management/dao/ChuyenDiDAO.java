@@ -25,7 +25,6 @@ public class ChuyenDiDAO {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
-
             while (resultSet.next()) {
                 danhSachChuyenDi.add(
                         new ChuyenDi(

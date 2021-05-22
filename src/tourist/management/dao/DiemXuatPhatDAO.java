@@ -23,7 +23,6 @@ public class DiemXuatPhatDAO {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
-
             while (resultSet.next()) {
                 danhSachDiemXuatPhat.add(
                         new DiemXuatPhat(
