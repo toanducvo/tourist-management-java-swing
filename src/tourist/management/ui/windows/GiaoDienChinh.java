@@ -17,11 +17,11 @@ public class GiaoDienChinh extends JFrame {
 
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        tabbedPane.addTab("Đặt Vé", null, new GiaoDienDatVe().createGiaoDienDatVe(), "click");
-        tabbedPane.addTab("Lịch Sử Đặt Vé", null, new GiaoDienLichSuDatVe().createGiaoDienLichSuDatVe(), "click");
-        tabbedPane.addTab("Thêm Điểm Xuất Phát", null, new GiaoDienThemDiemXuatPhat().createGiaoDienThemDiemXuatPhat(), "click");
-        tabbedPane.addTab("Thêm Điểm Đến", null, new GiaoDienThemDiemDen().createGiaoDienThemDiemDen(), "click");
-        tabbedPane.addTab("Thêm Chuyến Đi", null, new GiaoDienThemChuyenDi().createGiaoDienThemChuyenDi(), "click");
+        tabbedPane.addTab("Đặt Vé", null, new GiaoDienDatVe().createGiaoDienDatVe());
+        tabbedPane.addTab("Lịch Sử Đặt Vé", null, new GiaoDienLichSuDatVe().createGiaoDienLichSuDatVe());
+        tabbedPane.addTab("Thêm Điểm Xuất Phát", null, new GiaoDienThemDiemXuatPhat().createGiaoDienThemDiemXuatPhat());
+        tabbedPane.addTab("Thêm Điểm Đến", null, new GiaoDienThemDiemDen().createGiaoDienThemDiemDen());
+        tabbedPane.addTab("Thêm Chuyến Đi", null, new GiaoDienThemChuyenDi().createGiaoDienThemChuyenDi());
         add(tabbedPane);
     }
 }
