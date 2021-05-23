@@ -24,6 +24,10 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
     private final DefaultTableModel modelDiemDen;
     private JButton btnTimDiemDen;
     private JTextField txtTimDiemDen;
+    private JButton btnTimDiemDenTheoTinh;
+    private JTextField txtTimDiemDenTheoTinh;
+    private final JButton btnDanhSach;
+    
     
     private final DiemDenDAO diemDenDAO;
     JPanel pnlGiaoDienThemDiemDen = new JPanel(new BorderLayout());
@@ -79,18 +83,25 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
         pnlGiaoDienThemDiemDenSouth.setPreferredSize(new Dimension(600, 50));
         pnlGiaoDienThemDiemDen.add(pnlGiaoDienThemDiemDenSouth, BorderLayout.SOUTH);
         btnThemDiemDen = new JButton("Thêm Điểm Đến");
-		txtTimDiemDen = new JTextField(20);
+		txtTimDiemDen = new JTextField(15);
         btnTimDiemDen = new JButton("Tìm Điểm Đến");
-        
+        txtTimDiemDenTheoTinh = new JTextField(15);
+        btnTimDiemDenTheoTinh = new JButton("Tìm Theo Tỉnh");
+        btnDanhSach = new JButton("Danh Sách");        
         
         pnlGiaoDienThemDiemDenSouth.add(txtTimDiemDen);
 		pnlGiaoDienThemDiemDenSouth.add(btnTimDiemDen);
+		pnlGiaoDienThemDiemDenSouth.add(txtTimDiemDenTheoTinh);
+		pnlGiaoDienThemDiemDenSouth.add(btnTimDiemDenTheoTinh);
 		pnlGiaoDienThemDiemDenSouth.add(btnThemDiemDen);
-
+		pnlGiaoDienThemDiemDenSouth.add(btnDanhSach);
+		
 
         tableDiemDen.addMouseListener(this);
         btnThemDiemDen.addActionListener(this);
         btnTimDiemDen.addActionListener(this);
+        btnTimDiemDenTheoTinh.addActionListener(this);
+        btnDanhSach.addActionListener(this);
     }
 
     public JPanel createGiaoDienThemDiemDen() {
@@ -171,7 +182,43 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
 
 			}
 		}
-        
+        else if(o.equals(btnTimDiemDenTheoTinh)) {
+        	String name = txtTimDiemDenTheoTinh.getText();
+
+			ArrayList<DiemDen> dsdiemDen  = new ArrayList<DiemDen>();
+			try {
+				if (name.length() > 0) {
+					dsdiemDen = diemDenDAO.getDiemDenTheoTinh(name);
+					DefaultTableModel tableModel = (DefaultTableModel) tableDiemDen.getModel();
+					tableModel.setRowCount(0);
+
+					for (DiemDen diemDen : dsdiemDen) {
+						tableModel.addRow(new Object[] { 
+								diemDen.getMaDiemDen(),
+								diemDen.getTenDiemDen(),
+								diemDen.getTenTinh()
+						});
+					}
+
+					tableModel.fireTableDataChanged();
+				}
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
+
+			}
+        }
+        else if (o.equals(btnDanhSach)) {
+        	modelDiemDen.setRowCount(0);
+        	for (DiemDen diemDen : diemDenDAO.getAllDiemDen()) {
+                modelDiemDen.addRow(new Object[]{
+                        diemDen.getMaDiemDen(),
+                        diemDen.getTenDiemDen(),
+                        diemDen.getTenTinh()
+                });
+            }
+        }
 
     }
     

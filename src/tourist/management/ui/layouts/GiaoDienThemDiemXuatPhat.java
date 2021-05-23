@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 
 
 public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, ActionListener {
@@ -23,6 +24,10 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
     private final JButton btnThemDiemXuatPhat;
     private final JTable tableDiemXuatPhat;
     private final DefaultTableModel modelDiemXuatPhat;
+    private final JTextField txtTenTinhCanTim;
+    private final JButton btnTimTheoTinh;
+    private final JButton btnDanhSach;
+    
     private final DiemXuatPhatDAO diemXuatPhatDAO;
     JPanel pnlGiaoDienThemDiemXuatPhat = new JPanel(new BorderLayout());
 
@@ -76,11 +81,19 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
         pnlGiaoDienThemDiemXuatPhatSouth.setPreferredSize(new Dimension(600, 50));
         pnlGiaoDienThemDiemXuatPhat.add(pnlGiaoDienThemDiemXuatPhatSouth, BorderLayout.SOUTH);
         btnThemDiemXuatPhat = new JButton("Thêm Điểm Xuất Phát");
+        txtTenTinhCanTim = new JTextField(20);
+        btnTimTheoTinh = new JButton("Tìm Theo Tỉnh");
+        btnDanhSach = new JButton("Danh Sách");
+        
+        pnlGiaoDienThemDiemXuatPhatSouth.add(txtTenTinhCanTim);
+        pnlGiaoDienThemDiemXuatPhatSouth.add(btnTimTheoTinh);
         pnlGiaoDienThemDiemXuatPhatSouth.add(btnThemDiemXuatPhat);
-
+        pnlGiaoDienThemDiemXuatPhatSouth.add(btnDanhSach);
 
         tableDiemXuatPhat.addMouseListener(this);
         btnThemDiemXuatPhat.addActionListener(this);
+        btnTimTheoTinh.addActionListener(this);
+        btnDanhSach.addActionListener(this);
     }
 
     public JPanel createGiaoDienThemDiemXuatPhat() {
@@ -134,8 +147,43 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
                     JOptionPane.showMessageDialog(this, "Trùng");
                 }
         	}
-            
+        }
+        else if(o.equals(btnTimTheoTinh)) {
+        	String name = txtTenTinhCanTim.getText();
 
+			ArrayList<DiemXuatPhat> dsDiemXuatPhat  = new ArrayList<DiemXuatPhat>();
+			try {
+				if (name.length() > 0) {
+					dsDiemXuatPhat = diemXuatPhatDAO.getDiemXuatPhatTheoTinh(name);
+					DefaultTableModel tableModel = (DefaultTableModel) tableDiemXuatPhat.getModel();
+					tableModel.setRowCount(0);
+
+					for (DiemXuatPhat diemXuatPhat : dsDiemXuatPhat) {
+						tableModel.addRow(new Object[] { 
+								diemXuatPhat.getMaDiemXuatPhat(),
+								diemXuatPhat.getTenDiemXuatPhat(),
+								diemXuatPhat.getTenTinh()
+						});
+					}
+
+					tableModel.fireTableDataChanged();
+				}
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
+
+			}
+        }
+        else if(o.equals(btnDanhSach)) {
+        	modelDiemXuatPhat.setRowCount(0);
+        	for (DiemXuatPhat diemXuatPhat : diemXuatPhatDAO.getAllDiemXuatPhat()) {
+                modelDiemXuatPhat.addRow(new Object[]{
+                        diemXuatPhat.getMaDiemXuatPhat(),
+                        diemXuatPhat.getTenDiemXuatPhat(),
+                        diemXuatPhat.getTenTinh()
+                });
+            }
         }
 
     }
@@ -149,11 +197,11 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
  			JOptionPane.showMessageDialog(this, " Mã điểm xuất phát bắt đầu bằng 2 ký tự “DD”, theo sau là 6 ký tự là số");
  			return false;
  		}
- 		if (!(tenDiemXuatPhat.length() > 0 && tenDiemXuatPhat.matches("\"^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\s]+$\""))) {
+ 		if (!(tenDiemXuatPhat.length() > 0 && tenDiemXuatPhat.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$"))) {
  			JOptionPane.showMessageDialog(this, "  Tên điểm xuất không chứa các ký tự số và ký tự đặc biệt");
  			return false;
  		}
- 		if (!(tenTinh.length() > 0 && tenTinh.matches("\"^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\s]+$\""))) {
+ 		if (!(tenTinh.length() > 0 && tenTinh.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$"))) {
  			JOptionPane.showMessageDialog(this, " tên tỉnh không chứa các ký tự số và ký tự đặc biệt");
  			return false;
  		}

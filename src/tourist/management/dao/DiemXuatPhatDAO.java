@@ -66,4 +66,35 @@ public class DiemXuatPhatDAO {
         return rowEffected > 0;
     }
     
+    public ArrayList<DiemXuatPhat> getDiemXuatPhatTheoTinh(String tenTinhCanTim) {
+		ArrayList<DiemXuatPhat> dsDiemXuatPhat = new ArrayList<DiemXuatPhat>();
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement statement = null;
+		try {
+			String sql = "select * from DiemXuatPhat where tenTinh=?";
+			statement = con.prepareStatement(sql);
+			statement.setString(1, tenTinhCanTim);
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				String maDiemXuatPhat = rs.getString(1);
+				String tenDiemXuatPhat = rs.getString(2);
+				String tenTinh = rs.getString(3);
+				
+				DiemXuatPhat diemXuatPhat = new DiemXuatPhat(maDiemXuatPhat, tenDiemXuatPhat, tenTinh);
+				dsDiemXuatPhat.add(diemXuatPhat);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return dsDiemXuatPhat;
+	}
+    
 }

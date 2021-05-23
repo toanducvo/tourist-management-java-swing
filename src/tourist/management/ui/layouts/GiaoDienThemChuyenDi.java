@@ -11,13 +11,15 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class GiaoDienThemChuyenDi extends JFrame implements ActionListener {
+public class GiaoDienThemChuyenDi extends JFrame implements ActionListener, MouseListener {
     private final JTextField txtMaChuyenDi;
     private final JTextField txtDiemXuatPhat;
     private final JTextField txtDiemDen;
@@ -110,6 +112,7 @@ public class GiaoDienThemChuyenDi extends JFrame implements ActionListener {
 
         btnThemChuyenDi.addActionListener(this);
         btnXoaRongChuyenDi.addActionListener(this);
+        tableChuyenDi.addMouseListener(this);
 //>>>>>>> 3650b667edcb9d13ccce920701e7bc60a33f3b13:src/tourist/management/ui/layouts/GiaoDienThemChuyenDi.java
     }
 
@@ -165,6 +168,43 @@ public class GiaoDienThemChuyenDi extends JFrame implements ActionListener {
 
 		return true;
 
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		int row = tableChuyenDi.getSelectedRow();
+		txtMaChuyenDi.setText(String.valueOf(tableChuyenDi.getValueAt(row, 0)));
+		txtDiemXuatPhat.setText(String.valueOf(tableChuyenDi.getValueAt(row, 1)));
+		txtDiemDen.setText(String.valueOf(tableChuyenDi.getValueAt(row, 2)));
+		txtNgayGioDi.setText(String.valueOf(tableChuyenDi.getValueAt(row, 3)));
+		txtNgayGioDen.setText(String.valueOf(tableChuyenDi.getValueAt(row, 4)));
+		txtBienSo.setText(String.valueOf(tableChuyenDi.getValueAt(row, 5)));
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
     
     

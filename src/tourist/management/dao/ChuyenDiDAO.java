@@ -75,4 +75,39 @@ public class ChuyenDiDAO {
         return rowEffected > 0;
     }
     
+    public ArrayList<ChuyenDi> getChuyenDiTheoTen(String TenDiemDenCanTim) {
+		ArrayList<ChuyenDi> dsChuyenDi = new ArrayList<ChuyenDi>();
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement statement = null;
+		try {
+			String sql = "select * from ChuyenDi where maDiemDen=?";
+			statement = con.prepareStatement(sql);
+			statement.setString(1, TenDiemDenCanTim);
+			ResultSet resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				dsChuyenDi.add(
+                        new ChuyenDi(
+                                resultSet.getString("maChuyenDi"),
+                                new DiemXuatPhat(resultSet.getString("maDiemXuatPhat")),
+                                new DiemDen(resultSet.getString("maDiemDen")),
+                                resultSet.getTimestamp("ngayGioDi").toLocalDateTime(),
+                                resultSet.getTimestamp("ngayGioDen").toLocalDateTime(),
+                                resultSet.getString("bienSoXe")
+                        )
+                );
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return dsChuyenDi;
+	}
+    
 }

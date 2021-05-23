@@ -6,6 +6,7 @@ import tourist.management.dao.KhachHangDAO;
 import tourist.management.database.ConnectDB;
 import tourist.management.entity.ChuyenDi;
 import tourist.management.entity.DatVe;
+import tourist.management.entity.DiemDen;
 import tourist.management.entity.KhachHang;
 import tourist.management.entity.NhanVien;
 
@@ -20,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -52,6 +54,9 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
     private final JPanel pnlNor_bottom;
     private final JPanel pnlNor_top;
     private final JLabel lblTieuDe;
+    private final JTextField txtTimDiemDen;
+    private final JButton btntimDiemDen;
+    private final JButton btnDanhSachChuyenDi;
 
     private final ChuyenDiDAO chuyenDiDAO;
     private final KhachHangDAO khachHangDAO;
@@ -152,9 +157,17 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         pnlGiaoDienDatVe.add(pnlSou, BorderLayout.SOUTH);
         pnlSou.add(btnThem = new JButton("Đặt vé"));
         pnlSou.add(btnXoaRong = new JButton("Xóa rỗng"));
+        txtTimDiemDen = new JTextField(15);
+        pnlSou.add(txtTimDiemDen);
+        btntimDiemDen = new JButton("Tìm theo mã điểm đến");
+        pnlSou.add(btntimDiemDen);
+        btnDanhSachChuyenDi = new JButton("Danh Sách Chuyến Đi");
+        pnlSou.add(btnDanhSachChuyenDi);
 
         btnThem.addActionListener(this);
         btnXoaRong.addActionListener(this);
+        btntimDiemDen.addActionListener(this);
+        btnDanhSachChuyenDi.addActionListener(this);
     }
 
     public JPanel createGiaoDienDatVe() {
@@ -168,6 +181,12 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
             datVeHandler();
         } else if (o.equals(btnXoaRong)) {
             xoaRongHandler();
+        }
+        else if(o.equals(btntimDiemDen)) {
+        	timChuyenDiTheodiemDen();
+        }
+        else if(o.equals(btnDanhSachChuyenDi)) {
+        	danhSachChuyenDi();
         }
     }
 
@@ -272,5 +291,51 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         txtNgaySinh.setText("");
         txtMaKhachHang.requestFocus();
         table.clearSelection();
+    }
+    
+    private void timChuyenDiTheodiemDen( ) {
+    	String name = txtTimDiemDen.getText();
+
+		ArrayList<ChuyenDi> dsChuyenDi  = new ArrayList<ChuyenDi>();
+		try {
+			if (name.length() > 0) {
+				dsChuyenDi  = chuyenDiDAO.getChuyenDiTheoTen(name);
+				DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+				tableModel.setRowCount(0);
+
+				for (ChuyenDi chuyenDi : dsChuyenDi) {
+					tableModel.addRow(new Object[] { 
+							chuyenDi.getMaChuyenDi(),
+							chuyenDi.getDiemXuatPhat().getMaDiemXuatPhat(),
+							chuyenDi.getDiemDen().getMaDiemDen(),
+							chuyenDi.getMaChuyenDi(),
+							chuyenDi.getNgayGioDen(),
+							chuyenDi.getBienSoXe()
+					});
+				}
+
+				tableModel.fireTableDataChanged();
+			}
+		} catch (Exception e2) {
+			// TODO: handle exception
+			e2.printStackTrace();
+			JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
+
+		}
+    }
+    
+    public void danhSachChuyenDi() {
+    	model.setRowCount(0);
+    	List<ChuyenDi> danhSachChuyenDi = chuyenDiDAO.getAllChuyenDi();
+        for (ChuyenDi chuyenDi : danhSachChuyenDi) {
+            model.addRow(new Object[]{
+                    chuyenDi.getMaChuyenDi(),
+                    chuyenDi.getDiemXuatPhat().getMaDiemXuatPhat(),
+                    chuyenDi.getDiemDen().getMaDiemDen(),
+                    dateTimeFormatter.format(chuyenDi.getNgayGioDi()),
+                    dateTimeFormatter.format(chuyenDi.getNgayGioDen()),
+                    chuyenDi.getBienSoXe()
+            });
+        }
     }
 }
