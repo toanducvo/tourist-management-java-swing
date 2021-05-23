@@ -2,7 +2,6 @@ package tourist.management.dao;
 
 import tourist.management.database.ConnectDB;
 import tourist.management.entity.KhachHang;
-import tourist.management.entity.NhanVien;
 
 import java.sql.*;
 import java.util.ArrayList;
