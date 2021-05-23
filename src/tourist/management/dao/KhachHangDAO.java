@@ -1,7 +1,10 @@
 package tourist.management.dao;
 
 import tourist.management.database.ConnectDB;
+import tourist.management.entity.ChuyenDi;
+import tourist.management.entity.DatVe;
 import tourist.management.entity.KhachHang;
+import tourist.management.entity.NhanVien;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -45,6 +48,43 @@ public class KhachHangDAO {
         return rowEffected > 0;
     }
 
+    /**
+     *
+     * @return
+     */
+    public List<KhachHang> getAllKhachHang() {
+        List<KhachHang> danhSachKhachHang = new ArrayList<>();
+        ConnectDB.getInstance();
+        Connection connection = ConnectDB.getConnection();
+        try {
+            String sql = "SELECT * FROM KhachHang";
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                danhSachKhachHang.add(
+                        new KhachHang(
+                                resultSet.getString("maKhachHang"),
+                                resultSet.getString("hoKhachHang"),
+                                resultSet.getString("tenKhachHang"),
+                                resultSet.getBoolean("gioiTinh"),
+                                resultSet.getDate("ngaySinh").toLocalDate(),
+                                resultSet.getString("SoCMND"),
+                                resultSet.getString("soDienThoai"),
+                                resultSet.getString("email")
+                        )
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return danhSachKhachHang;
+    }
+
+    /**
+     *
+     * @param maKhachHang
+     * @return
+     */
     public List<KhachHang> getKhachHangTheoMa(String maKhachHang){
         List<KhachHang> danhSachKhachHang = new ArrayList<>();
         ConnectDB.getInstance();
