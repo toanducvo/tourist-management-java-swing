@@ -1,6 +1,6 @@
 package tourist.management.ui.layouts;
 
-import tourist.management.dao.LichSuDatVeDAO;
+import tourist.management.dao.DatVeDAO;
 import tourist.management.database.ConnectDB;
 import tourist.management.entity.DatVe;
 
@@ -26,7 +26,7 @@ public class GiaoDienLichSuDatVe extends JFrame implements MouseListener, Action
     private final JButton btnTim;
 
     private final JPanel pnlGiaoDienLichSuDatVe = new JPanel(new BorderLayout());
-    private final LichSuDatVeDAO lichSuDatVeDAO;
+    private final DatVeDAO datVeDAO;
     private final JButton btnXoaTim;
     private Object String;
     private JTextField txtXoaTim;
@@ -40,7 +40,7 @@ public class GiaoDienLichSuDatVe extends JFrame implements MouseListener, Action
             e.printStackTrace();
         }
 
-        lichSuDatVeDAO = new LichSuDatVeDAO();
+        datVeDAO = new DatVeDAO();
         pnlGiaoDienLichSuDatVe.setPreferredSize(new Dimension(600, 600));
         pnlGiaoDienLichSuDatVe.setBorder(BorderFactory.createTitledBorder("Lịch sử đặt vé"));
 
@@ -76,7 +76,7 @@ public class GiaoDienLichSuDatVe extends JFrame implements MouseListener, Action
         pnlGiaoDienLichSuDatVe.add(pnlSouth, BorderLayout.SOUTH);
 
 // load dữ liệu lên JTABLE
-        for (DatVe datVe : lichSuDatVeDAO.getAllDatVe()) {
+        for (DatVe datVe : datVeDAO.getAllDatVe()) {
             model.addRow(new Object[]{datVe.getKhachHang().getMaKhachHang(), datVe.getChuyenDi().getMaChuyenDi(),
                     datVe.getNhanVien().getMaNhanVien(), datVe.getNgayDatVe()});
         }
@@ -99,7 +99,7 @@ public class GiaoDienLichSuDatVe extends JFrame implements MouseListener, Action
             List<DatVe> datve;
             try {
                 if (name.length() > 0) {
-                    datve = lichSuDatVeDAO.getThongTinDatVeTheoMaKH(name);
+                    datve = datVeDAO.getThongTinDatVeTheoMaKH(name);
                     DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
                     tableModel.setRowCount(0);
 
