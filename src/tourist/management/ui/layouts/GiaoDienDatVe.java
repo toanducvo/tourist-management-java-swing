@@ -6,7 +6,6 @@ import tourist.management.dao.KhachHangDAO;
 import tourist.management.database.ConnectDB;
 import tourist.management.entity.ChuyenDi;
 import tourist.management.entity.DatVe;
-import tourist.management.entity.DiemDen;
 import tourist.management.entity.KhachHang;
 import tourist.management.entity.NhanVien;
 
@@ -56,7 +55,8 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
     private final JLabel lblTieuDe;
     private final JTextField txtTimDiemDen;
     private final JButton btntimDiemDen;
-    private final JButton btnDanhSachChuyenDi;
+    private final JButton btnCapNhatChuyenDi;
+    private final JButton btnXemDanhSachKhachhang;
 
     private final ChuyenDiDAO chuyenDiDAO;
     private final KhachHangDAO khachHangDAO;
@@ -84,7 +84,7 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
 
         //Phần North
         pnlGiaoDienDatVe.add(pnlNor = new JPanel());
-        pnlNor.setPreferredSize(new Dimension(570, 230));
+        pnlNor.setPreferredSize(new Dimension(570, 210));
         pnlGiaoDienDatVe.add(pnlNor, BorderLayout.NORTH);
 
         pnlNor.add(pnlNor_top = new JPanel());
@@ -95,7 +95,7 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
 
         pnlNor.add(pnlNor_bottom = new JPanel());
         pnlNor.add(pnlNor_bottom, BorderLayout.SOUTH);
-        pnlNor_bottom.setPreferredSize(new Dimension(570, 180));
+        pnlNor_bottom.setPreferredSize(new Dimension(570, 170));
         pnlNor_bottom.add(lblMaKhachHang = new JLabel("Mã Khách Hàng"));
         pnlNor_bottom.add(txtMaKhachHang = new JTextField(57));
         pnlNor_bottom.add(lblHoKhachHang = new JLabel("Họ Khách Hàng"));
@@ -153,7 +153,7 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
 
         //Phần South
         pnlGiaoDienDatVe.add(pnlSou = new JPanel());
-        pnlSou.setPreferredSize(new Dimension(570, 35));
+        pnlSou.setPreferredSize(new Dimension(570, 70));
         pnlGiaoDienDatVe.add(pnlSou, BorderLayout.SOUTH);
         pnlSou.add(btnThem = new JButton("Đặt vé"));
         pnlSou.add(btnXoaRong = new JButton("Xóa rỗng"));
@@ -161,13 +161,16 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         pnlSou.add(txtTimDiemDen);
         btntimDiemDen = new JButton("Tìm theo mã điểm đến");
         pnlSou.add(btntimDiemDen);
-        btnDanhSachChuyenDi = new JButton("Danh Sách Chuyến Đi");
-        pnlSou.add(btnDanhSachChuyenDi);
+        btnCapNhatChuyenDi = new JButton("Cập nhật chuyến đi");
+        pnlSou.add(btnCapNhatChuyenDi);
+        btnXemDanhSachKhachhang = new JButton("Danh sách khách hàng");
+        pnlSou.add(btnXemDanhSachKhachhang);
 
         btnThem.addActionListener(this);
         btnXoaRong.addActionListener(this);
         btntimDiemDen.addActionListener(this);
-        btnDanhSachChuyenDi.addActionListener(this);
+        btnCapNhatChuyenDi.addActionListener(this);
+        btnXemDanhSachKhachhang.addActionListener(this);
     }
 
     public JPanel createGiaoDienDatVe() {
@@ -181,12 +184,12 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
             datVeHandler();
         } else if (o.equals(btnXoaRong)) {
             xoaRongHandler();
-        }
-        else if(o.equals(btntimDiemDen)) {
-        	timChuyenDiTheodiemDen();
-        }
-        else if(o.equals(btnDanhSachChuyenDi)) {
-        	danhSachChuyenDi();
+        } else if (o.equals(btntimDiemDen)) {
+            timChuyenDiTheodiemDen();
+        } else if (o.equals(btnCapNhatChuyenDi)) {
+            capNhatChuyenDi();
+        } else if (o.equals(btnXemDanhSachKhachhang)) {
+            new GiaoDienKhachHang().setVisible(true);
         }
     }
 
@@ -216,20 +219,17 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
                 txtMaKhachHang.selectAll();
                 txtMaKhachHang.requestFocus();
                 return;
-            }
-            else if (!Pattern.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\s]+",hoKhachhang)){
-                JOptionPane.showMessageDialog(this,"Họ khách hàng không hợp lệ, vui lòng kiểm tra lại!");
+            } else if (!Pattern.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\s]+", hoKhachhang)) {
+                JOptionPane.showMessageDialog(this, "Họ khách hàng không hợp lệ, vui lòng kiểm tra lại!");
                 txtHoKhachHang.selectAll();
                 txtHoKhachHang.requestFocus();
                 return;
-            }
-            else if (!Pattern.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\s]+",tenKhachhang)){
-                JOptionPane.showMessageDialog(this,"Tên khách hàng không hợp lệ, vui lòng kiểm tra lại!");
+            } else if (!Pattern.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\s]+", tenKhachhang)) {
+                JOptionPane.showMessageDialog(this, "Tên khách hàng không hợp lệ, vui lòng kiểm tra lại!");
                 txtTenKhachHang.selectAll();
                 txtTenKhachHang.requestFocus();
                 return;
-            }
-            else if (!Pattern.matches("^(\\w{1,})@(\\w{1,})(\\.(\\w{2,})){1,}", email)) {
+            } else if (!Pattern.matches("^(\\w{1,})@(\\w{1,})(\\.(\\w{2,})){1,}", email)) {
                 JOptionPane.showMessageDialog(this, "Email không hợp lệ, vui lòng kiểm tra lại!");
                 txtSoDienThoai.selectAll();
                 txtSoDienThoai.requestFocus();
@@ -292,41 +292,38 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         txtMaKhachHang.requestFocus();
         table.clearSelection();
     }
-    
-    private void timChuyenDiTheodiemDen( ) {
-    	String name = txtTimDiemDen.getText();
 
-		ArrayList<ChuyenDi> dsChuyenDi  = new ArrayList<ChuyenDi>();
-		try {
-			if (name.length() > 0) {
-				dsChuyenDi  = chuyenDiDAO.getChuyenDiTheoTen(name);
-				DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
-				tableModel.setRowCount(0);
+    private void timChuyenDiTheodiemDen() {
+        String name = txtTimDiemDen.getText();
 
-				for (ChuyenDi chuyenDi : dsChuyenDi) {
-					tableModel.addRow(new Object[] { 
-							chuyenDi.getMaChuyenDi(),
-							chuyenDi.getDiemXuatPhat().getMaDiemXuatPhat(),
-							chuyenDi.getDiemDen().getMaDiemDen(),
-							chuyenDi.getMaChuyenDi(),
-							chuyenDi.getNgayGioDen(),
-							chuyenDi.getBienSoXe()
-					});
-				}
+        ArrayList<ChuyenDi> dsChuyenDi = new ArrayList<>();
+        try {
+            if (name.length() > 0) {
+                dsChuyenDi = chuyenDiDAO.getChuyenDiTheoTen(name);
+                DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+                tableModel.setRowCount(0);
 
-				tableModel.fireTableDataChanged();
-			}
-		} catch (Exception e2) {
-			// TODO: handle exception
-			e2.printStackTrace();
-			JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
-
-		}
+                for (ChuyenDi chuyenDi : dsChuyenDi) {
+                    tableModel.addRow(new Object[]{
+                            chuyenDi.getMaChuyenDi(),
+                            chuyenDi.getDiemXuatPhat().getMaDiemXuatPhat(),
+                            chuyenDi.getDiemDen().getMaDiemDen(),
+                            chuyenDi.getMaChuyenDi(),
+                            chuyenDi.getNgayGioDen(),
+                            chuyenDi.getBienSoXe()
+                    });
+                }
+                tableModel.fireTableDataChanged();
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
+        }
     }
-    
-    public void danhSachChuyenDi() {
-    	model.setRowCount(0);
-    	List<ChuyenDi> danhSachChuyenDi = chuyenDiDAO.getAllChuyenDi();
+
+    public void capNhatChuyenDi() {
+        model.setRowCount(0);
+        List<ChuyenDi> danhSachChuyenDi = chuyenDiDAO.getAllChuyenDi();
         for (ChuyenDi chuyenDi : danhSachChuyenDi) {
             model.addRow(new Object[]{
                     chuyenDi.getMaChuyenDi(),
