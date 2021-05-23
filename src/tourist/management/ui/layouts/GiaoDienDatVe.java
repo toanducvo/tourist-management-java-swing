@@ -198,19 +198,19 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
                 txtMaKhachHang.requestFocus();
                 return;
             }
-//            else if (!Pattern.matches("[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s\\W]",hoKhachhang)){
-//                JOptionPane.showMessageDialog(this,"Họ khách hàng không hợp lệ, vui lòng kiểm tra lại!");
-//                txtHoKhachHang.selectAll();
-//                txtHoKhachHang.requestFocus();
-//                return;
-//            }
-//            else if (!Pattern.matches("[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s\\W]",tenKhachhang)){
-//                JOptionPane.showMessageDialog(this,"Tên khách hàng không hợp lệ, vui lòng kiểm tra lại!");
-//                txtTenKhachHang.selectAll();
-//                txtTenKhachHang.requestFocus();
-//                return;
-//            }
-            else if (!email.isBlank() && !Pattern.matches("^(\\w{1,})@(\\w{1,})(\\.(\\w{2,})){1,}", email)) {
+            else if (!Pattern.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\s]+",hoKhachhang)){
+                JOptionPane.showMessageDialog(this,"Họ khách hàng không hợp lệ, vui lòng kiểm tra lại!");
+                txtHoKhachHang.selectAll();
+                txtHoKhachHang.requestFocus();
+                return;
+            }
+            else if (!Pattern.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\s]+",tenKhachhang)){
+                JOptionPane.showMessageDialog(this,"Tên khách hàng không hợp lệ, vui lòng kiểm tra lại!");
+                txtTenKhachHang.selectAll();
+                txtTenKhachHang.requestFocus();
+                return;
+            }
+            else if (!Pattern.matches("^(\\w{1,})@(\\w{1,})(\\.(\\w{2,})){1,}", email)) {
                 JOptionPane.showMessageDialog(this, "Email không hợp lệ, vui lòng kiểm tra lại!");
                 txtSoDienThoai.selectAll();
                 txtSoDienThoai.requestFocus();
