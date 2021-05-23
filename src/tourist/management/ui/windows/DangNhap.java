@@ -1,4 +1,4 @@
-package tourist.management.ui.views;
+package tourist.management.ui.windows;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,11 +40,11 @@ public class DangNhap extends JFrame {
         pnlNhap = new JPanel();
         lblTenDangNhap = new JLabel("Tên đăng nhập");
         lblTenDangNhap.setFont(new Font(lblTenDangNhap.getFont().getFontName(), Font.PLAIN, 14));
-        txtTenDangNhap = new JTextField(30);
+        txtTenDangNhap = new JTextField(40);
 
         lblMatKhau = new JLabel("Mật khẩu");
         lblMatKhau.setFont(new Font(lblMatKhau.getFont().getFontName(), Font.PLAIN, 14));
-        txtMatKhau = new JPasswordField(34);
+        txtMatKhau = new JPasswordField(44);
 
         pnlNhap.add(lblTenDangNhap);
         pnlNhap.add(txtTenDangNhap);

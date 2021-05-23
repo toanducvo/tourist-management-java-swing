@@ -1,4 +1,4 @@
-package tourist.management.ui.components;
+package tourist.management.ui.layouts;
 
 import tourist.management.dao.DiemDenDAO;
 import tourist.management.database.ConnectDB;
@@ -46,13 +46,13 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
         pnlGiaoDienThemDiemDenNourth.setPreferredSize(new Dimension(600, 100));
         pnlGiaoDienThemDiemDen.add(pnlGiaoDienThemDiemDenNourth, BorderLayout.NORTH);
         pnlGiaoDienThemDiemDenNourth.add(new JLabel("Mã điểm đến"));
-        txtmaDiemDen = new JTextField(43);
+        txtmaDiemDen = new JTextField(60);
         pnlGiaoDienThemDiemDenNourth.add(txtmaDiemDen);
         pnlGiaoDienThemDiemDenNourth.add(new JLabel("Tên điểm đến"));
-        txttenDiemDen = new JTextField(43);
+        txttenDiemDen = new JTextField(60);
         pnlGiaoDienThemDiemDenNourth.add(txttenDiemDen);
         pnlGiaoDienThemDiemDenNourth.add(new JLabel("Tên tỉnh"));
-        txttenTinh = new JTextField(46);
+        txttenTinh = new JTextField(63);
         pnlGiaoDienThemDiemDenNourth.add(txttenTinh);
 
         JPanel pnlGiaoDienThemDiemDenCenter = new JPanel(new BorderLayout());
@@ -63,6 +63,8 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
         modelDiemDen = new DefaultTableModel(header, 0);
         tableDiemDen = new JTable(modelDiemDen);
         pnlGiaoDienThemDiemDenCenter.add(new JScrollPane(tableDiemDen), BorderLayout.CENTER);
+        tableDiemDen.setShowGrid(false);
+        tableDiemDen.setRowHeight(20);
 
         for (DiemDen diemDen : diemDenDAO.getAllDiemDen()) {
             modelDiemDen.addRow(new Object[]{

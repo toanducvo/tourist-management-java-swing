@@ -1,4 +1,4 @@
-package tourist.management.ui.components;
+package tourist.management.ui.layouts;
 
 import tourist.management.dao.LichSuDatVeDAO;
 import tourist.management.database.ConnectDB;
@@ -62,6 +62,8 @@ public class GiaoDienLichSuDatVe extends JFrame implements MouseListener, Action
         };
 
         table.getColumnModel().getColumn(3).setCellRenderer(tableCellRenderer);
+        table.setShowGrid(false);
+        table.setRowHeight(20);
 
         JSplitPane spl = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         spl.setBottomComponent(new JScrollPane(table));

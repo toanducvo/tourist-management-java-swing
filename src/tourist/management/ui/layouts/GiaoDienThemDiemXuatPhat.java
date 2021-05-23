@@ -1,4 +1,4 @@
-package tourist.management.ui.components;
+package tourist.management.ui.layouts;
 
 import tourist.management.dao.DiemXuatPhatDAO;
 import tourist.management.database.ConnectDB;
@@ -43,13 +43,13 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
         pnlGiaoDienThemDiemXuatPhatNourth.setPreferredSize(new Dimension(600, 100));
         pnlGiaoDienThemDiemXuatPhat.add(pnlGiaoDienThemDiemXuatPhatNourth, BorderLayout.NORTH);
         pnlGiaoDienThemDiemXuatPhatNourth.add(new JLabel("Mã điểm xuất phát"));
-        txtmaDiemXuatPhat = new JTextField(40);
+        txtmaDiemXuatPhat = new JTextField(57);
         pnlGiaoDienThemDiemXuatPhatNourth.add(txtmaDiemXuatPhat);
         pnlGiaoDienThemDiemXuatPhatNourth.add(new JLabel("Tên điểm xuất phát"));
-        txttenDiemXuatPhat = new JTextField(40);
+        txttenDiemXuatPhat = new JTextField(57);
         pnlGiaoDienThemDiemXuatPhatNourth.add(txttenDiemXuatPhat);
         pnlGiaoDienThemDiemXuatPhatNourth.add(new JLabel("Tên tỉnh"));
-        txttenTinh = new JTextField(46);
+        txttenTinh = new JTextField(63);
         pnlGiaoDienThemDiemXuatPhatNourth.add(txttenTinh);
 
         JPanel pnlGiaoDienThemDiemXuatPhatCenter = new JPanel(new BorderLayout());
@@ -60,6 +60,8 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
         modelDiemXuatPhat = new DefaultTableModel(header, 0);
         tableDiemXuatPhat = new JTable(modelDiemXuatPhat);
         pnlGiaoDienThemDiemXuatPhatCenter.add(new JScrollPane(tableDiemXuatPhat), BorderLayout.CENTER);
+        tableDiemXuatPhat.setShowGrid(false);
+        tableDiemXuatPhat.setRowHeight(20);
 
         for (DiemXuatPhat diemXuatPhat : diemXuatPhatDAO.getAllDiemXuatPhat()) {
             modelDiemXuatPhat.addRow(new Object[]{

@@ -1,4 +1,4 @@
-package tourist.management.ui.components;
+package tourist.management.ui.layouts;
 
 import tourist.management.dao.ChuyenDiDAO;
 import tourist.management.database.ConnectDB;
@@ -50,22 +50,22 @@ public class GiaoDienThemChuyenDi extends JFrame implements ActionListener {
         pnlGiaoDienThemChuyenDiNourth.setPreferredSize(new Dimension(600, 200));
         pnlGiaoDienThemChuyenDi.add(pnlGiaoDienThemChuyenDiNourth, BorderLayout.NORTH);
         pnlGiaoDienThemChuyenDiNourth.add(new JLabel("Mã chuyến đi"));
-        txtMaChuyenDi = new JTextField(43);
+        txtMaChuyenDi = new JTextField(60);
         pnlGiaoDienThemChuyenDiNourth.add(txtMaChuyenDi);
         pnlGiaoDienThemChuyenDiNourth.add(new JLabel("Điểm xuất phát"));
-        txtDiemXuatPhat = new JTextField(42);
+        txtDiemXuatPhat = new JTextField(58);
         pnlGiaoDienThemChuyenDiNourth.add(txtDiemXuatPhat);
         pnlGiaoDienThemChuyenDiNourth.add(new JLabel("Điểm đến"));
-        txtDiemDen = new JTextField(45);
+        txtDiemDen = new JTextField(62);
         pnlGiaoDienThemChuyenDiNourth.add(txtDiemDen);
         pnlGiaoDienThemChuyenDiNourth.add(new JLabel("Biển số xe"));
-        txtBienSo = new JTextField(45);
+        txtBienSo = new JTextField(62);
         pnlGiaoDienThemChuyenDiNourth.add(txtBienSo);
-        pnlGiaoDienThemChuyenDiNourth.add(new JLabel("Ngày Giờ Đi"));
-        txtNgayGioDi = new JTextField(44);
+        pnlGiaoDienThemChuyenDiNourth.add(new JLabel("Ngày giờ Đi"));
+        txtNgayGioDi = new JTextField(26);
         pnlGiaoDienThemChuyenDiNourth.add(txtNgayGioDi);
-        pnlGiaoDienThemChuyenDiNourth.add(new JLabel("Ngày Giờ Đến"));
-        txtNgayGioDen = new JTextField(43);
+        pnlGiaoDienThemChuyenDiNourth.add(new JLabel("Ngày giờ Đến"));
+        txtNgayGioDen = new JTextField(25);
         pnlGiaoDienThemChuyenDiNourth.add(txtNgayGioDen);
 
 
@@ -77,6 +77,8 @@ public class GiaoDienThemChuyenDi extends JFrame implements ActionListener {
         modelChuyenDi = new DefaultTableModel(header, 0);
         tableChuyenDi = new JTable(modelChuyenDi);
         pnlGiaoDienThemChuyenDiCenter.add(new JScrollPane(tableChuyenDi), BorderLayout.CENTER);
+        tableChuyenDi.setShowGrid(false);
+        tableChuyenDi.setRowHeight(20);
 
         List<ChuyenDi> danhSachChuyenDi = chuyenDiDAO.getAllChuyenDi();
 
@@ -97,12 +99,18 @@ public class GiaoDienThemChuyenDi extends JFrame implements ActionListener {
         JPanel pnlGiaoDienThemChuyenDiSouth = new JPanel();
         pnlGiaoDienThemChuyenDiSouth.setPreferredSize(new Dimension(600, 50));
         pnlGiaoDienThemChuyenDi.add(pnlGiaoDienThemChuyenDiSouth, BorderLayout.SOUTH);
-        btnThemChuyenDi = new JButton("Thêm Chuyến Đi");
+        btnThemChuyenDi = new JButton("Thêm chuyến Đi");
         pnlGiaoDienThemChuyenDiSouth.add(btnThemChuyenDi);
         btnXoaRongChuyenDi = new JButton("Xóa rỗng");
         pnlGiaoDienThemChuyenDiSouth.add(btnXoaRongChuyenDi);
+//<<<<<<< HEAD:src/tourist/management/ui/components/GiaoDienThemChuyenDi.java
         
+//        btnThemChuyenDi.addActionListener(this);
+//=======
+
         btnThemChuyenDi.addActionListener(this);
+        btnXoaRongChuyenDi.addActionListener(this);
+//>>>>>>> 3650b667edcb9d13ccce920701e7bc60a33f3b13:src/tourist/management/ui/layouts/GiaoDienThemChuyenDi.java
     }
 
     public JPanel createGiaoDienThemChuyenDi() {

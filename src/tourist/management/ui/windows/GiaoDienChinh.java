@@ -1,7 +1,7 @@
-package tourist.management.ui.views;
+package tourist.management.ui.windows;
 
 import tourist.management.entity.NhanVien;
-import tourist.management.ui.components.*;
+import tourist.management.ui.layouts.*;
 
 import javax.swing.*;
 
