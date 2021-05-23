@@ -3,6 +3,8 @@ package tourist.management.ui.components;
 import tourist.management.dao.ChuyenDiDAO;
 import tourist.management.database.ConnectDB;
 import tourist.management.entity.ChuyenDi;
+import tourist.management.entity.DiemDen;
+import tourist.management.entity.DiemXuatPhat;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -10,10 +12,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class GiaoDienThemChuyenDi implements ActionListener {
+public class GiaoDienThemChuyenDi extends JFrame implements ActionListener {
     private final JTextField txtMaChuyenDi;
     private final JTextField txtDiemXuatPhat;
     private final JTextField txtDiemDen;
@@ -97,6 +101,8 @@ public class GiaoDienThemChuyenDi implements ActionListener {
         pnlGiaoDienThemChuyenDiSouth.add(btnThemChuyenDi);
         btnXoaRongChuyenDi = new JButton("Xóa rỗng");
         pnlGiaoDienThemChuyenDiSouth.add(btnXoaRongChuyenDi);
+        
+        btnThemChuyenDi.addActionListener(this);
     }
 
     public JPanel createGiaoDienThemChuyenDi() {
@@ -105,6 +111,53 @@ public class GiaoDienThemChuyenDi implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+    	Object o = e.getSource();
+        if (o.equals(btnThemChuyenDi)) {
+        	if(ktRangBuoc()) {
+        		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"); 
+            	
+//            	LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
 
+                String maChuyenDi = txtMaChuyenDi.getText();
+                String maDiemXuatPhat = txtDiemXuatPhat.getText();
+                String maDiemDen = txtDiemDen.getText();
+                LocalDateTime ngayGioDi  = LocalDateTime.parse(txtNgayGioDi.getText(), formatter);
+                LocalDateTime ngayGioDen  = LocalDateTime.parse(txtNgayGioDen.getText(), formatter);
+                String bienSo = txtBienSo.getText();
+
+                ChuyenDi chuyenDi = new ChuyenDi(maChuyenDi, new DiemXuatPhat(maDiemXuatPhat), new DiemDen(maDiemDen), ngayGioDi, ngayGioDen, bienSo);
+                
+                try {
+                    chuyenDiDAO.createChuyenDi(chuyenDi);
+                    modelChuyenDi.addRow(new Object[]{
+                            chuyenDi.getMaChuyenDi(),
+                            chuyenDi.getDiemXuatPhat().getMaDiemXuatPhat(),
+                            chuyenDi.getDiemDen().getMaDiemDen(),
+                            formatter.format(chuyenDi.getNgayGioDi()),
+                            formatter.format(chuyenDi.getNgayGioDen()),
+                            chuyenDi.getBienSoXe()
+                    });
+                } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
+                    JOptionPane.showMessageDialog(this, "Trùng");
+                }
+        	}
+        	
+
+        }
     }
+    
+    private boolean ktRangBuoc() {
+		String maChuyenDi = txtMaChuyenDi.getText().trim();
+		String bienSoXe = txtBienSo.getText().trim();
+		
+		if (!(maChuyenDi.length() > 0 && maChuyenDi.matches("^(CD)[0-9]{6}"))) {
+			JOptionPane.showMessageDialog(this, " Mã chuyến đi bắt đầu bằng 2 ký tự “CD”, theo sau là 6 ký tự là số");
+			return false;
+		}
+
+		return true;
+
+	}
+    
+    
 }

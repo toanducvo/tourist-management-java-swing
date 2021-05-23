@@ -160,41 +160,72 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Object o = e.getSource();
         if (o.equals(btnThem)) {
-            String maKhachHang = txtMaKhachHang.getText();
-            String hoKhachhang = txtHoKhachHang.getText();
-            String tenKhachhang = txtTenKhachHang.getText();
-            boolean gioiTinh = radNu.isSelected();
-            LocalDate ngaySinh = LocalDate.parse(txtNgaySinh.getText(), dateTimeFormatter);
-            String soCMND = txtCMND.getText();
-            String soDienThoai = txtSoDienThoai.getText();
-            String email = txtEmail.getText();
-            KhachHang khachHang = new KhachHang(maKhachHang, hoKhachhang, tenKhachhang, gioiTinh, ngaySinh, soCMND, soDienThoai, email);
-            int row = table.getSelectedRow();
+            if(ktRangBuoc()) {
+            	String maKhachHang = txtMaKhachHang.getText();
+                String hoKhachhang = txtHoKhachHang.getText();
+                String tenKhachhang = txtTenKhachHang.getText();
+                boolean gioiTinh = radNu.isSelected();
+                LocalDate ngaySinh = LocalDate.parse(txtNgaySinh.getText(), dateTimeFormatter);
+                String soCMND = txtCMND.getText();
+                String soDienThoai = txtSoDienThoai.getText();
+                String email = txtEmail.getText();
+                KhachHang khachHang = new KhachHang(maKhachHang, hoKhachhang, tenKhachhang, gioiTinh, ngaySinh, soCMND, soDienThoai, email);
+                int row = table.getSelectedRow();
 
-            // lỗi
-            if (row != -1) {
-                String maChuyenDi = table.getValueAt(row, 1).toString();
-                String maNhanVien = "NV000001";
-                LocalDateTime ngayDatVe = LocalDateTime.now();
-                DatVe datVe = new DatVe(khachHang, new ChuyenDi(maChuyenDi), new NhanVien(maNhanVien), ngayDatVe);
+                // lỗi
+                if (row != -1) {
+                    String maChuyenDi = table.getValueAt(row, 1).toString();
+                    String maNhanVien = "NV000001";
+                    LocalDateTime ngayDatVe = LocalDateTime.now();
+                    DatVe datVe = new DatVe(khachHang, new ChuyenDi(maChuyenDi), new NhanVien(maNhanVien), ngayDatVe);
 
-                try {
-                    khachHangDAO.createKhachHang(khachHang);
-                } catch (SQLIntegrityConstraintViolationException ignored) {
-                }
-                finally {
                     try {
-                        datVeDAO.createDatVe(datVe);
-                        JOptionPane.showMessageDialog(this, "Đặt vé thành công!");
-                    } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
-                        JOptionPane.showMessageDialog(this, "Trùng");
+                        khachHangDAO.createKhachHang(khachHang);
+                    } catch (SQLIntegrityConstraintViolationException ignored) {
+                    }
+                    finally {
+                        try {
+                            datVeDAO.createDatVe(datVe);
+                            JOptionPane.showMessageDialog(this, "Đặt vé thành công!");
+                        } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
+                            JOptionPane.showMessageDialog(this, "Trùng");
+                        }
                     }
                 }
+                else {
+                    JOptionPane.showMessageDialog(this, "Chưa chọn chuyến đi!");
+                }
             }
-            else {
-                JOptionPane.showMessageDialog(this, "Chưa chọn chuyến đi!");
-            }
-
         }
     }
+    
+    private boolean ktRangBuoc() {
+		String maKhachHang = txtMaKhachHang.getText().trim();
+		String hoKhachHang = txtHoKhachHang.getText().trim();
+		String tenKhachHang = txtTenKhachHang.getText().trim();
+		String soCMND = txtCMND.getText().trim();
+		String soDienThoai = txtSoDienThoai.getText().trim();
+		String email = txtEmail.getText().trim();
+		if (!(maKhachHang.length() > 0 && maKhachHang.matches("^(KH)[0-9]{6}"))) {
+			JOptionPane.showMessageDialog(this, " Mã khách hàng bắt đầu bằng 2 ký tự “KH”, theo sau là 6 ký tự là số");
+			return false;
+		}
+
+		if (!(soCMND.length() > 0 && soCMND.matches("[0-9]{9}|[0-9]{12}"))) {
+			JOptionPane.showMessageDialog(this,"Số CMND/CCCD có độ dài là 9 hoặc 12 ký tự là ký tự số");
+			return false;
+		}
+		if (!(hoKhachHang.length() > 0 && hoKhachHang.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$"))) {
+			JOptionPane.showMessageDialog(this,"Họ khách hàng không chứa các ký tự số và ký tự đặc biệt.");
+			return false;
+		}
+		if (!(tenKhachHang.length() > 0 && tenKhachHang.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$"))) {
+			JOptionPane.showMessageDialog(this,"Tên khách hàng không chứa các ký tự số và ký tự đặc biệt.");
+			return false;
+		}
+				
+		return true;
+
+	}
+    
 }

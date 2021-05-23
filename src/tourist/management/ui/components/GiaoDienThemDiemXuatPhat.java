@@ -2,6 +2,7 @@ package tourist.management.ui.components;
 
 import tourist.management.dao.DiemXuatPhatDAO;
 import tourist.management.database.ConnectDB;
+import tourist.management.entity.DiemDen;
 import tourist.management.entity.DiemXuatPhat;
 
 import javax.swing.*;
@@ -12,9 +13,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 
-public class GiaoDienThemDiemXuatPhat implements MouseListener, ActionListener {
+public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, ActionListener {
     private final JTextField txtmaDiemXuatPhat;
     private final JTextField txttenDiemXuatPhat;
     private final JTextField txttenTinh;
@@ -82,6 +84,7 @@ public class GiaoDienThemDiemXuatPhat implements MouseListener, ActionListener {
     public JPanel createGiaoDienThemDiemXuatPhat() {
         return pnlGiaoDienThemDiemXuatPhat;
     }
+    
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -109,5 +112,52 @@ public class GiaoDienThemDiemXuatPhat implements MouseListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+    	Object o = e.getSource();
+        if (o.equals(btnThemDiemXuatPhat)) {
+        	if(ktRangBuoc()) {
+        		String maDiemXuatPhat = txtmaDiemXuatPhat.getText();
+                String tenDiemXuatPhat = txttenDiemXuatPhat.getText();
+                String tenTinh = txttenTinh.getText();
+
+                DiemXuatPhat diemXuatPhat = new DiemXuatPhat(maDiemXuatPhat, tenDiemXuatPhat, tenTinh);
+
+                try {
+                    diemXuatPhatDAO.createDiemXuatPhat(diemXuatPhat);
+                    modelDiemXuatPhat.addRow(new Object[]{
+                            diemXuatPhat.getMaDiemXuatPhat(),
+                            diemXuatPhat.getTenDiemXuatPhat(),
+                            diemXuatPhat.getTenTinh()
+                    });
+                } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
+                    JOptionPane.showMessageDialog(this, "Trùng");
+                }
+        	}
+            
+
+        }
+
     }
+    
+    private boolean ktRangBuoc() {
+ 		String maDiemXuatPhat = txtmaDiemXuatPhat.getText().trim();
+ 		String tenDiemXuatPhat = txttenDiemXuatPhat.getText().trim();
+ 		String tenTinh = txttenTinh.getText().trim();
+
+ 		if (!(maDiemXuatPhat.length() > 0 && maDiemXuatPhat.matches("^(DXP)[0-9]{5}"))) {
+ 			JOptionPane.showMessageDialog(this, " Mã điểm xuất phát bắt đầu bằng 2 ký tự “DD”, theo sau là 6 ký tự là số");
+ 			return false;
+ 		}
+ 		if (!(tenDiemXuatPhat.length() > 0 && tenDiemXuatPhat.matches("\"^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\s]+$\""))) {
+ 			JOptionPane.showMessageDialog(this, "  Tên điểm xuất không chứa các ký tự số và ký tự đặc biệt");
+ 			return false;
+ 		}
+ 		if (!(tenTinh.length() > 0 && tenTinh.matches("\"^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\\\s]+$\""))) {
+ 			JOptionPane.showMessageDialog(this, " tên tỉnh không chứa các ký tự số và ký tự đặc biệt");
+ 			return false;
+ 		}
+
+ 		return true;
+
+ 	}
+    
 }
