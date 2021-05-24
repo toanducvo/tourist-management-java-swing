@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TouristManagement" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="tourist.management.application.TouristManagement" />
+    <module name="tourist-management-java-swing" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
