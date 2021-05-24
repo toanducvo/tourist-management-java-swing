@@ -80,10 +80,8 @@ public class GiaoDienTraCuuKhachHang extends JFrame {
         pnlTraCuu.add(btnTimKiem);
         pnlTraCuu.add(btnXoaTimKiem);
 
-
         add(pnlDanhSach, BorderLayout.CENTER);
         add(pnlTraCuu, BorderLayout.SOUTH);
-
 
         btnTimKiem.addActionListener(new ActionListener() {
             @Override
@@ -98,8 +96,6 @@ public class GiaoDienTraCuuKhachHang extends JFrame {
                         }
                         break;
                     }
-
-
                     case 1: {
                         String cmnd = txtTimKiem.getText().trim();
                         if (!Pattern.matches("\\d{12}|\\d{9}", cmnd)) {
@@ -112,7 +108,6 @@ public class GiaoDienTraCuuKhachHang extends JFrame {
                         }
                         break;
                     }
-
                     case 2: {
                         try {
                             LocalDate ngaySinh = LocalDate.parse(txtTimKiem.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -121,11 +116,21 @@ public class GiaoDienTraCuuKhachHang extends JFrame {
                                 defaultTableModel.addRow(parseKhachHang(khachHang));
                             }
                         } catch (DateTimeParseException dateTimeParseException) {
-                            JOptionPane.showMessageDialog(pnlTraCuu, "Ngày sinh không hợp lệ");
+                            JOptionPane.showMessageDialog(pnlTraCuu, "Ngày sinh không hợp lệ!");
                         }
                         break;
                     }
+                }
+            }
+        });
 
+        btnXoaTimKiem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                txtTimKiem.setText("");
+                defaultTableModel.setRowCount(0);
+                for (KhachHang khachHang : khachHangDAO.getAllKhachHang()) {
+                    defaultTableModel.addRow(parseKhachHang(khachHang));
                 }
             }
         });
