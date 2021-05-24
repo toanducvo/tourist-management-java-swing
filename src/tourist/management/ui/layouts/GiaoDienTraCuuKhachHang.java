@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
-public class GiaoDienKhachHang extends JFrame {
+public class GiaoDienTraCuuKhachHang extends JFrame {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final DefaultTableModel defaultTableModel;
@@ -27,7 +27,7 @@ public class GiaoDienKhachHang extends JFrame {
     private final JPanel pnlDanhSach;
     private final JPanel pnlTraCuu;
 
-    public GiaoDienKhachHang() {
+    public GiaoDienTraCuuKhachHang() {
         setTitle("Tra cứu khách hàng");
         setSize(700, 468);
         setResizable(false);
@@ -65,7 +65,7 @@ public class GiaoDienKhachHang extends JFrame {
         txtTimKiem.requestFocus();
         lblLoaiTimKiem = new JLabel("Tìm kiếm theo");
         cboLocTheoDieuKien = new JComboBox<>();
-        cboLocTheoDieuKien.setSize(50,15);
+        cboLocTheoDieuKien.setSize(50, 15);
 
         cboLocTheoDieuKien.addItem("Tên");
         cboLocTheoDieuKien.addItem("Số CMND");
@@ -88,11 +88,9 @@ public class GiaoDienKhachHang extends JFrame {
         btnTimKiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 int selected = cboLocTheoDieuKien.getSelectedIndex();
                 switch (selected) {
-                    case 0:
-                    {
+                    case 0: {
                         String timKiem = txtTimKiem.getText().trim();
                         defaultTableModel.setRowCount(0);
                         for (KhachHang khachHang : khachHangDAO.getKhachHangTheoTen(timKiem)) {
@@ -102,13 +100,11 @@ public class GiaoDienKhachHang extends JFrame {
                     }
 
 
-                    case 1:
-                    {
+                    case 1: {
                         String cmnd = txtTimKiem.getText().trim();
                         if (!Pattern.matches("\\d{12}|\\d{9}", cmnd)) {
                             JOptionPane.showMessageDialog(pnlTraCuu, "CMND không hợp lệ!");
-                        }
-                        else {
+                        } else {
                             defaultTableModel.setRowCount(0);
                             for (KhachHang khachHang : khachHangDAO.getKhachHangTheoCMND(cmnd)) {
                                 defaultTableModel.addRow(parseKhachHang(khachHang));
@@ -117,16 +113,14 @@ public class GiaoDienKhachHang extends JFrame {
                         break;
                     }
 
-                    case 2:
-                    {
+                    case 2: {
                         try {
                             LocalDate ngaySinh = LocalDate.parse(txtTimKiem.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
                             defaultTableModel.setRowCount(0);
                             for (KhachHang khachHang : khachHangDAO.getKhachHangTheoNgaySinh(ngaySinh)) {
                                 defaultTableModel.addRow(parseKhachHang(khachHang));
                             }
-                        }
-                        catch (DateTimeParseException dateTimeParseException){
+                        } catch (DateTimeParseException dateTimeParseException) {
                             JOptionPane.showMessageDialog(pnlTraCuu, "Ngày sinh không hợp lệ");
                         }
                         break;
@@ -137,8 +131,8 @@ public class GiaoDienKhachHang extends JFrame {
         });
     }
 
-    private Object[] parseKhachHang(KhachHang khachHang){
-        return new Object[] {
+    private Object[] parseKhachHang(KhachHang khachHang) {
+        return new Object[]{
                 khachHang.getMaKhachHang(),
                 khachHang.getHoKhachHang(),
                 khachHang.getTenKhachHang(),
