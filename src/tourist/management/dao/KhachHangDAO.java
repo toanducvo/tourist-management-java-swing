@@ -1,10 +1,7 @@
 package tourist.management.dao;
 
 import tourist.management.database.ConnectDB;
-import tourist.management.entity.ChuyenDi;
-import tourist.management.entity.DatVe;
 import tourist.management.entity.KhachHang;
-import tourist.management.entity.NhanVien;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -49,7 +46,6 @@ public class KhachHangDAO {
     }
 
     /**
-     *
      * @return
      */
     public List<KhachHang> getAllKhachHang() {
@@ -81,11 +77,10 @@ public class KhachHangDAO {
     }
 
     /**
-     *
      * @param maKhachHang
      * @return
      */
-    public List<KhachHang> getKhachHangTheoMa(String maKhachHang){
+    public List<KhachHang> getKhachHangTheoMa(String maKhachHang) {
         List<KhachHang> danhSachKhachHang = new ArrayList<>();
         ConnectDB.getInstance();
         Connection connection = ConnectDB.getConnection();
@@ -111,8 +106,7 @@ public class KhachHangDAO {
             }
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 assert preparedStatement != null;
                 preparedStatement.close();

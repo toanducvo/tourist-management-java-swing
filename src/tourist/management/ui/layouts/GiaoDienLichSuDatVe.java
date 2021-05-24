@@ -26,7 +26,7 @@ public class GiaoDienLichSuDatVe extends JFrame implements MouseListener, Action
     private final JButton btnTim;
 
     private final JPanel pnlGiaoDienLichSuDatVe = new JPanel(new BorderLayout());
-    private final DatVeDAO datVeDAO;
+    private final DatVeDAO lichSuDatVeDAO;
     private final JButton btnXoaTim;
     private Object String;
     private JTextField txtXoaTim;
@@ -40,7 +40,7 @@ public class GiaoDienLichSuDatVe extends JFrame implements MouseListener, Action
             e.printStackTrace();
         }
 
-        datVeDAO = new DatVeDAO();
+        lichSuDatVeDAO = new DatVeDAO();
         pnlGiaoDienLichSuDatVe.setPreferredSize(new Dimension(600, 600));
         pnlGiaoDienLichSuDatVe.setBorder(BorderFactory.createTitledBorder("Lịch sử đặt vé"));
 
@@ -76,7 +76,7 @@ public class GiaoDienLichSuDatVe extends JFrame implements MouseListener, Action
         pnlGiaoDienLichSuDatVe.add(pnlSouth, BorderLayout.SOUTH);
 
 // load dữ liệu lên JTABLE
-        for (DatVe datVe : datVeDAO.getAllDatVe()) {
+        for (DatVe datVe : lichSuDatVeDAO.getAllDatVe()) {
             model.addRow(new Object[]{datVe.getKhachHang().getMaKhachHang(), datVe.getChuyenDi().getMaChuyenDi(),
                     datVe.getNhanVien().getMaNhanVien(), datVe.getNgayDatVe()});
         }
@@ -96,24 +96,23 @@ public class GiaoDienLichSuDatVe extends JFrame implements MouseListener, Action
         if (o.equals(btnTim)) {
             String name = txtTim.getText();
 
-            List<DatVe> datve;
+            List<DatVe> lsDatVe;
             try {
                 if (name.length() > 0) {
-                    datve = datVeDAO.getThongTinDatVeTheoMaKH(name);
+                    lsDatVe = lichSuDatVeDAO.getThongTinDatVeTheoMaKH(name);
                     DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
                     tableModel.setRowCount(0);
 
-                    for (DatVe datvexe : datve) {
-                        tableModel.addRow(new Object[]{datvexe.getKhachHang().getMaKhachHang(),
-                                datvexe.getChuyenDi().getMaChuyenDi(), datvexe.getNhanVien().getMaNhanVien(),
-                                datvexe.getNgayDatVe()});
+                    for (DatVe lichSuDatVe : lsDatVe) {
+                        tableModel.addRow(new Object[]{lichSuDatVe.getKhachHang().getMaKhachHang(),
+                                lichSuDatVe.getChuyenDi().getMaChuyenDi(), lichSuDatVe.getNhanVien().getMaNhanVien(),
+                                lichSuDatVe.getNgayDatVe()});
                     }
 
                     tableModel.fireTableDataChanged();
+                } else if (name.equals("")) {
+                    JOptionPane.showMessageDialog(this, "Phải nhập dữ liệu");
                 }
-//				else if(name.equals(anObject)) {
-//					JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
-//				}
             } catch (Exception e2) {
                 e2.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
@@ -121,7 +120,15 @@ public class GiaoDienLichSuDatVe extends JFrame implements MouseListener, Action
         }
         if (o.equals(btnXoaTim)) {
             txtTim.setText("");
+            DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+            tableModel.setRowCount(0);
+            //Trả về TableModel cung cấp dữ liệu được hiển thị bởi JTable này.
+            //lấy DefaultTableModel từ JTable và sau đó thêm Cột vào đó.
 
+            for (DatVe datVe : lichSuDatVeDAO.getAllDatVe()) {
+                model.addRow(new Object[]{datVe.getKhachHang().getMaKhachHang(), datVe.getChuyenDi().getMaChuyenDi(),
+                        datVe.getNhanVien().getMaNhanVien(), datVe.getNgayDatVe()});
+            }
         }
 
     }

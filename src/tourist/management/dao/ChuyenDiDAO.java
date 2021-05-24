@@ -5,13 +5,7 @@ import tourist.management.entity.ChuyenDi;
 import tourist.management.entity.DiemDen;
 import tourist.management.entity.DiemXuatPhat;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +39,7 @@ public class ChuyenDiDAO {
         }
         return danhSachChuyenDi;
     }
-    
+
     public boolean createChuyenDi(ChuyenDi chuyenDi) throws SQLIntegrityConstraintViolationException {
         ConnectDB.getInstance();
         Connection connection = ConnectDB.getConnection();
@@ -74,19 +68,19 @@ public class ChuyenDiDAO {
         }
         return rowEffected > 0;
     }
-    
+
     public ArrayList<ChuyenDi> getChuyenDiTheoTen(String TenDiemDenCanTim) {
-		ArrayList<ChuyenDi> dsChuyenDi = new ArrayList<ChuyenDi>();
-		ConnectDB.getInstance();
-		Connection con = ConnectDB.getConnection();
-		PreparedStatement statement = null;
-		try {
-			String sql = "select * from ChuyenDi where maDiemDen=?";
-			statement = con.prepareStatement(sql);
-			statement.setString(1, TenDiemDenCanTim);
-			ResultSet resultSet = statement.executeQuery();
-			while (resultSet.next()) {
-				dsChuyenDi.add(
+        ArrayList<ChuyenDi> dsChuyenDi = new ArrayList<ChuyenDi>();
+        ConnectDB.getInstance();
+        Connection con = ConnectDB.getConnection();
+        PreparedStatement statement = null;
+        try {
+            String sql = "select * from ChuyenDi where maDiemDen=?";
+            statement = con.prepareStatement(sql);
+            statement.setString(1, TenDiemDenCanTim);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                dsChuyenDi.add(
                         new ChuyenDi(
                                 resultSet.getString("maChuyenDi"),
                                 new DiemXuatPhat(resultSet.getString("maDiemXuatPhat")),
@@ -96,18 +90,18 @@ public class ChuyenDiDAO {
                                 resultSet.getString("bienSoXe")
                         )
                 );
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				statement.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
-		}
-		return dsChuyenDi;
-	}
-    
+        }
+        return dsChuyenDi;
+    }
+
 }

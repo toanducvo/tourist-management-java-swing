@@ -7,17 +7,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class NhanVienDAO {
     /**
-     *
      * @param maNhanVien mã nhân viên
      * @return
      */
-    public List<NhanVien> getNhanVienTheoMa(String maNhanVien){
+    public List<NhanVien> getNhanVienTheoMa(String maNhanVien) {
         List<NhanVien> danhSachNhanVien = new ArrayList<>();
         ConnectDB.getInstance();
         Connection connection = ConnectDB.getConnection();
@@ -42,8 +40,7 @@ public class NhanVienDAO {
             }
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 assert preparedStatement != null;
                 preparedStatement.close();

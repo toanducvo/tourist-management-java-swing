@@ -12,17 +12,15 @@ import java.time.format.DateTimeFormatter;
 
 public class GiaoDienKhachHang extends JFrame {
 
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final DefaultTableModel defaultTableModel;
     private final JTable tblKhachHang;
-
     private final JTextField txtTimKiem;
     private final JButton btnTimKiemTheoTen;
     private final JButton btnTimKiemTheoCMND;
     private final KhachHangDAO khachHangDAO;
     private final JPanel pnlDanhSach;
     private final JPanel pnlChucNang;
-
-    private static final DateTimeFormatter dateTimeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public GiaoDienKhachHang() {
         setTitle("Danh sách khách hàng");

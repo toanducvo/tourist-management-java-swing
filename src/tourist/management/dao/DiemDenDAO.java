@@ -65,66 +65,66 @@ public class DiemDenDAO {
         }
         return rowEffected > 0;
     }
-    
+
     public ArrayList<DiemDen> getDiemDenTheoTen(String TenDiemDenCanTim) {
-		ArrayList<DiemDen> dsDiemDen = new ArrayList<DiemDen>();
-		ConnectDB.getInstance();
-		Connection con = ConnectDB.getConnection();
-		PreparedStatement statement = null;
-		try {
-			String sql = "select * from DiemDen where tenDiemDen=?";
-			statement = con.prepareStatement(sql);
-			statement.setString(1, TenDiemDenCanTim);
-			ResultSet rs = statement.executeQuery();
-			while (rs.next()) {
-				String maDiemDen = rs.getString(1);
-				String tenDiemDen = rs.getString(2);
-				String tenTinh = rs.getString(3);
-				
-				DiemDen diemDen = new DiemDen(maDiemDen, tenDiemDen, tenTinh);
-				dsDiemDen.add(diemDen);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				statement.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+        ArrayList<DiemDen> dsDiemDen = new ArrayList<DiemDen>();
+        ConnectDB.getInstance();
+        Connection con = ConnectDB.getConnection();
+        PreparedStatement statement = null;
+        try {
+            String sql = "select * from DiemDen where tenDiemDen=?";
+            statement = con.prepareStatement(sql);
+            statement.setString(1, TenDiemDenCanTim);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String maDiemDen = rs.getString(1);
+                String tenDiemDen = rs.getString(2);
+                String tenTinh = rs.getString(3);
 
-		}
-		return dsDiemDen;
-	}
-    
+                DiemDen diemDen = new DiemDen(maDiemDen, tenDiemDen, tenTinh);
+                dsDiemDen.add(diemDen);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return dsDiemDen;
+    }
+
     public ArrayList<DiemDen> getDiemDenTheoTinh(String tenTinhCanTim) {
-		ArrayList<DiemDen> dsDiemDen = new ArrayList<DiemDen>();
-		ConnectDB.getInstance();
-		Connection con = ConnectDB.getConnection();
-		PreparedStatement statement = null;
-		try {
-			String sql = "select * from DiemDen where tenTinh=?";
-			statement = con.prepareStatement(sql);
-			statement.setString(1, tenTinhCanTim);
-			ResultSet rs = statement.executeQuery();
-			while (rs.next()) {
-				String maDiemDen = rs.getString(1);
-				String tenDiemDen = rs.getString(2);
-				String tenTinh = rs.getString(3);
-				
-				DiemDen diemDen = new DiemDen(maDiemDen, tenDiemDen, tenTinh);
-				dsDiemDen.add(diemDen);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				statement.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+        ArrayList<DiemDen> dsDiemDen = new ArrayList<DiemDen>();
+        ConnectDB.getInstance();
+        Connection con = ConnectDB.getConnection();
+        PreparedStatement statement = null;
+        try {
+            String sql = "select * from DiemDen where tenTinh=?";
+            statement = con.prepareStatement(sql);
+            statement.setString(1, tenTinhCanTim);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String maDiemDen = rs.getString(1);
+                String tenDiemDen = rs.getString(2);
+                String tenTinh = rs.getString(3);
 
-		}
-		return dsDiemDen;
-	}
+                DiemDen diemDen = new DiemDen(maDiemDen, tenDiemDen, tenTinh);
+                dsDiemDen.add(diemDen);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return dsDiemDen;
+    }
 }

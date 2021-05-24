@@ -3,12 +3,7 @@ package tourist.management.dao;
 import tourist.management.database.ConnectDB;
 import tourist.management.entity.DiemXuatPhat;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +34,7 @@ public class DiemXuatPhatDAO {
         }
         return danhSachDiemXuatPhat;
     }
-    
+
     public boolean createDiemXuatPhat(DiemXuatPhat diemXuatPhat) throws SQLIntegrityConstraintViolationException {
         ConnectDB.getInstance();
         Connection connection = ConnectDB.getConnection();
@@ -65,36 +60,65 @@ public class DiemXuatPhatDAO {
         }
         return rowEffected > 0;
     }
-    
-    public ArrayList<DiemXuatPhat> getDiemXuatPhatTheoTinh(String tenTinhCanTim) {
-		ArrayList<DiemXuatPhat> dsDiemXuatPhat = new ArrayList<DiemXuatPhat>();
-		ConnectDB.getInstance();
-		Connection con = ConnectDB.getConnection();
-		PreparedStatement statement = null;
-		try {
-			String sql = "select * from DiemXuatPhat where tenTinh=?";
-			statement = con.prepareStatement(sql);
-			statement.setString(1, tenTinhCanTim);
-			ResultSet rs = statement.executeQuery();
-			while (rs.next()) {
-				String maDiemXuatPhat = rs.getString(1);
-				String tenDiemXuatPhat = rs.getString(2);
-				String tenTinh = rs.getString(3);
-				
-				DiemXuatPhat diemXuatPhat = new DiemXuatPhat(maDiemXuatPhat, tenDiemXuatPhat, tenTinh);
-				dsDiemXuatPhat.add(diemXuatPhat);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				statement.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 
-		}
-		return dsDiemXuatPhat;
-	}
-    
+    public ArrayList<DiemXuatPhat> getDiemXuatPhatTheoTinh(String tenTinhCanTim) {
+        ArrayList<DiemXuatPhat> dsDiemXuatPhat = new ArrayList<DiemXuatPhat>();
+        ConnectDB.getInstance();
+        Connection con = ConnectDB.getConnection();
+        PreparedStatement statement = null;
+        try {
+            String sql = "select * from DiemXuatPhat where tenTinh=?";
+            statement = con.prepareStatement(sql);
+            statement.setString(1, tenTinhCanTim);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String maDiemXuatPhat = rs.getString(1);
+                String tenDiemXuatPhat = rs.getString(2);
+                String tenTinh = rs.getString(3);
+
+                DiemXuatPhat diemXuatPhat = new DiemXuatPhat(maDiemXuatPhat, tenDiemXuatPhat, tenTinh);
+                dsDiemXuatPhat.add(diemXuatPhat);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return dsDiemXuatPhat;
+    }
+
+    public boolean xoaMaDiemXuatPhat(String timMaDiemXuatPhat) {
+
+        ConnectDB.getInstance();
+        Connection con = ConnectDB.getConnection();
+        PreparedStatement statement = null;
+        int n = 0;
+        try {
+            String sql = "delete from DatVe where maChuyenDi =?"
+                    + "delete from ChuyenDi where maDiemXuatPhat ='?"
+                    + "delete from DiemXuatPhat where maDiemXuatPhat=? ";
+            statement.setString(1, timMaDiemXuatPhat);
+            statement.setString(2, timMaDiemXuatPhat);
+            statement.setString(3, timMaDiemXuatPhat);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return n > 0;
+    }
+
+
 }

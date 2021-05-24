@@ -2,7 +2,6 @@ package tourist.management.ui.layouts;
 
 import tourist.management.dao.DiemXuatPhatDAO;
 import tourist.management.database.ConnectDB;
-import tourist.management.entity.DiemDen;
 import tourist.management.entity.DiemXuatPhat;
 
 import javax.swing.*;
@@ -27,9 +26,10 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
     private final JTextField txtTenTinhCanTim;
     private final JButton btnTimTheoTinh;
     private final JButton btnDanhSach;
-    
+
     private final DiemXuatPhatDAO diemXuatPhatDAO;
     JPanel pnlGiaoDienThemDiemXuatPhat = new JPanel(new BorderLayout());
+    private final JButton btnXoa;
 
     public GiaoDienThemDiemXuatPhat() {
         try {
@@ -84,22 +84,24 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
         txtTenTinhCanTim = new JTextField(20);
         btnTimTheoTinh = new JButton("Tìm Theo Tỉnh");
         btnDanhSach = new JButton("Danh Sách");
-        
+        btnXoa = new JButton("Xoá");
         pnlGiaoDienThemDiemXuatPhatSouth.add(txtTenTinhCanTim);
         pnlGiaoDienThemDiemXuatPhatSouth.add(btnTimTheoTinh);
         pnlGiaoDienThemDiemXuatPhatSouth.add(btnThemDiemXuatPhat);
         pnlGiaoDienThemDiemXuatPhatSouth.add(btnDanhSach);
+        pnlGiaoDienThemDiemXuatPhatSouth.add(btnXoa);
 
         tableDiemXuatPhat.addMouseListener(this);
         btnThemDiemXuatPhat.addActionListener(this);
         btnTimTheoTinh.addActionListener(this);
         btnDanhSach.addActionListener(this);
+        btnXoa.addActionListener(this);
     }
 
     public JPanel createGiaoDienThemDiemXuatPhat() {
         return pnlGiaoDienThemDiemXuatPhat;
     }
-    
+
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -127,10 +129,10 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	Object o = e.getSource();
+        Object o = e.getSource();
         if (o.equals(btnThemDiemXuatPhat)) {
-        	if(ktRangBuoc()) {
-        		String maDiemXuatPhat = txtmaDiemXuatPhat.getText();
+            if (ktRangBuoc()) {
+                String maDiemXuatPhat = txtmaDiemXuatPhat.getText();
                 String tenDiemXuatPhat = txttenDiemXuatPhat.getText();
                 String tenTinh = txttenTinh.getText();
 
@@ -146,68 +148,85 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
                 } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
                     JOptionPane.showMessageDialog(this, "Trùng");
                 }
-        	}
-        }
-        else if(o.equals(btnTimTheoTinh)) {
-        	String name = txtTenTinhCanTim.getText();
+            }
+        } else if (o.equals(btnTimTheoTinh)) {
+            String name = txtTenTinhCanTim.getText();
 
-			ArrayList<DiemXuatPhat> dsDiemXuatPhat  = new ArrayList<DiemXuatPhat>();
-			try {
-				if (name.length() > 0) {
-					dsDiemXuatPhat = diemXuatPhatDAO.getDiemXuatPhatTheoTinh(name);
-					DefaultTableModel tableModel = (DefaultTableModel) tableDiemXuatPhat.getModel();
-					tableModel.setRowCount(0);
+            ArrayList<DiemXuatPhat> dsDiemXuatPhat = new ArrayList<DiemXuatPhat>();
+            try {
+                if (name.length() > 0) {
+                    dsDiemXuatPhat = diemXuatPhatDAO.getDiemXuatPhatTheoTinh(name);
+                    DefaultTableModel tableModel = (DefaultTableModel) tableDiemXuatPhat.getModel();
+                    tableModel.setRowCount(0);
 
-					for (DiemXuatPhat diemXuatPhat : dsDiemXuatPhat) {
-						tableModel.addRow(new Object[] { 
-								diemXuatPhat.getMaDiemXuatPhat(),
-								diemXuatPhat.getTenDiemXuatPhat(),
-								diemXuatPhat.getTenTinh()
-						});
-					}
+                    for (DiemXuatPhat diemXuatPhat : dsDiemXuatPhat) {
+                        tableModel.addRow(new Object[]{
+                                diemXuatPhat.getMaDiemXuatPhat(),
+                                diemXuatPhat.getTenDiemXuatPhat(),
+                                diemXuatPhat.getTenTinh()
+                        });
+                    }
 
-					tableModel.fireTableDataChanged();
-				}
-			} catch (Exception e2) {
-				// TODO: handle exception
-				e2.printStackTrace();
-				JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
+                    tableModel.fireTableDataChanged();
+                }
+            } catch (Exception e2) {
+                // TODO: handle exception
+                e2.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
 
-			}
-        }
-        else if(o.equals(btnDanhSach)) {
-        	modelDiemXuatPhat.setRowCount(0);
-        	for (DiemXuatPhat diemXuatPhat : diemXuatPhatDAO.getAllDiemXuatPhat()) {
+            }
+        } else if (o.equals(btnDanhSach)) {
+            modelDiemXuatPhat.setRowCount(0);
+            for (DiemXuatPhat diemXuatPhat : diemXuatPhatDAO.getAllDiemXuatPhat()) {
                 modelDiemXuatPhat.addRow(new Object[]{
                         diemXuatPhat.getMaDiemXuatPhat(),
                         diemXuatPhat.getTenDiemXuatPhat(),
                         diemXuatPhat.getTenTinh()
                 });
             }
+        } else if (o.equals(btnXoa)) {
+            int row = tableDiemXuatPhat.getSelectedRow();
+            if (row < 0) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng cần xoá ");
+            } else {
+                if (JOptionPane.showConfirmDialog(this, "Bạn có muốn xoá không!", "Cảnh Báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    try {
+
+                        String ma = txtmaDiemXuatPhat.getText();
+                        diemXuatPhatDAO.xoaMaDiemXuatPhat(tableDiemXuatPhat.getValueAt(row, 0).toString());
+                        modelDiemXuatPhat.removeRow(row);
+
+
+                    } catch (Exception e2) {
+                        // TODO: handle exception
+                        e2.printStackTrace();
+                    }
+                }
+            }
         }
 
     }
-    
+
     private boolean ktRangBuoc() {
- 		String maDiemXuatPhat = txtmaDiemXuatPhat.getText().trim();
- 		String tenDiemXuatPhat = txttenDiemXuatPhat.getText().trim();
- 		String tenTinh = txttenTinh.getText().trim();
+        String maDiemXuatPhat = txtmaDiemXuatPhat.getText().trim();
+        String tenDiemXuatPhat = txttenDiemXuatPhat.getText().trim();
+        String tenTinh = txttenTinh.getText().trim();
 
- 		if (!(maDiemXuatPhat.length() > 0 && maDiemXuatPhat.matches("^(DXP)[0-9]{5}"))) {
- 			JOptionPane.showMessageDialog(this, " Mã điểm xuất phát bắt đầu bằng 2 ký tự “DD”, theo sau là 6 ký tự là số");
- 			return false;
- 		}
- 		if (!(tenDiemXuatPhat.length() > 0 && tenDiemXuatPhat.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$"))) {
- 			JOptionPane.showMessageDialog(this, "  Tên điểm xuất không chứa các ký tự số và ký tự đặc biệt");
- 			return false;
- 		}
- 		if (!(tenTinh.length() > 0 && tenTinh.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$"))) {
- 			JOptionPane.showMessageDialog(this, " tên tỉnh không chứa các ký tự số và ký tự đặc biệt");
- 			return false;
- 		}
+        if (!(maDiemXuatPhat.length() > 0 && maDiemXuatPhat.matches("^(DXP)[0-9]{5}"))) {
+            JOptionPane.showMessageDialog(this, " Mã điểm xuất phát bắt đầu bằng 2 ký tự “DD”, theo sau là 6 ký tự là số");
+            return false;
+        }
+        if (!(tenDiemXuatPhat.length() > 0 && tenDiemXuatPhat.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$"))) {
+            JOptionPane.showMessageDialog(this, "  Tên điểm xuất không chứa các ký tự số và ký tự đặc biệt");
+            return false;
+        }
+        if (!(tenTinh.length() > 0 && tenTinh.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$"))) {
+            JOptionPane.showMessageDialog(this, " tên tỉnh không chứa các ký tự số và ký tự đặc biệt");
+            return false;
+        }
 
- 		return true;
+        return true;
 
- 	}
-    
+    }
+
 }
