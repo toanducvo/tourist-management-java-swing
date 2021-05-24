@@ -47,7 +47,7 @@ public class KhachHangDAO {
     }
 
     /**
-     * @return
+     * @return danh sách tất cả khách hàng
      */
     public List<KhachHang> getAllKhachHang() {
         List<KhachHang> danhSachKhachHang = new ArrayList<>();
@@ -78,8 +78,8 @@ public class KhachHangDAO {
     }
 
     /**
-     * @param maKhachHang
-     * @return
+     * @param maKhachHang mã khách hàng
+     * @return danh sách khách hàng theo mã
      */
     public List<KhachHang> getKhachHangTheoMa(String maKhachHang) {
         List<KhachHang> danhSachKhachHang = new ArrayList<>();
@@ -118,6 +118,11 @@ public class KhachHangDAO {
         return danhSachKhachHang;
     }
 
+    /**
+     *
+     * @param tenKhachHang tên khách hàng
+     * @return danh sách khách hàng
+     */
     public List<KhachHang> getKhachHangTheoTen(String tenKhachHang) {
         List<KhachHang> danhSachKhachHang = new ArrayList<>();
         ConnectDB.getInstance();
@@ -155,6 +160,11 @@ public class KhachHangDAO {
         return danhSachKhachHang;
     }
 
+    /**
+     *
+     * @param ngaySinh ngày sinh
+     * @return danh sách khách hàng đã được lọc
+     */
     public List<KhachHang> getKhachHangTheoNgaySinh(LocalDate ngaySinh) {
         List<KhachHang> danhSachKhachHang = new ArrayList<>();
         ConnectDB.getInstance();
@@ -194,6 +204,11 @@ public class KhachHangDAO {
         return danhSachKhachHang;
     }
 
+    /**
+     *
+     * @param cmnd chứng minh nhân dân
+     * @return danh sách Khách hàng
+     */
     public List<KhachHang> getKhachHangTheoCMND(String cmnd) {
         List<KhachHang> danhSachKhachHang = new ArrayList<>();
         ConnectDB.getInstance();

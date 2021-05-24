@@ -11,14 +11,12 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class GiaoDienLichSuDatVe extends JFrame implements MouseListener, ActionListener {
+public class GiaoDienLichSuDatVe extends JFrame implements ActionListener {
     private final DefaultTableModel model;
     private final JTable table;
     private final JPanel pnlSouth;
@@ -103,6 +101,7 @@ public class GiaoDienLichSuDatVe extends JFrame implements MouseListener, Action
                     DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
                     tableModel.setRowCount(0);
 
+
                     for (DatVe lichSuDatVe : lsDatVe) {
                         tableModel.addRow(new Object[]{lichSuDatVe.getKhachHang().getMaKhachHang(),
                                 lichSuDatVe.getChuyenDi().getMaChuyenDi(), lichSuDatVe.getNhanVien().getMaNhanVien(),
@@ -122,7 +121,6 @@ public class GiaoDienLichSuDatVe extends JFrame implements MouseListener, Action
             txtTim.setText("");
             DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
             tableModel.setRowCount(0);
-            //Trả về TableModel cung cấp dữ liệu được hiển thị bởi JTable này.
             //lấy DefaultTableModel từ JTable và sau đó thêm Cột vào đó.
 
             for (DatVe datVe : lichSuDatVeDAO.getAllDatVe()) {
@@ -133,23 +131,5 @@ public class GiaoDienLichSuDatVe extends JFrame implements MouseListener, Action
 
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
 }

@@ -14,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, ActionListener {
@@ -24,12 +25,12 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
     private final JTable tableDiemXuatPhat;
     private final DefaultTableModel modelDiemXuatPhat;
     private final JTextField txtTenTinhCanTim;
-    private final JButton btnTimTheoTinh;
-    private final JButton btnDanhSach;
+    private final JButton btnTimKiem;
+    private final JButton btnCapNhat;
 
     private final DiemXuatPhatDAO diemXuatPhatDAO;
-    JPanel pnlGiaoDienThemDiemXuatPhat = new JPanel(new BorderLayout());
     private final JButton btnXoa;
+    JPanel pnlGiaoDienThemDiemXuatPhat = new JPanel(new BorderLayout());
 
     public GiaoDienThemDiemXuatPhat() {
         try {
@@ -80,21 +81,22 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
         JPanel pnlGiaoDienThemDiemXuatPhatSouth = new JPanel();
         pnlGiaoDienThemDiemXuatPhatSouth.setPreferredSize(new Dimension(600, 50));
         pnlGiaoDienThemDiemXuatPhat.add(pnlGiaoDienThemDiemXuatPhatSouth, BorderLayout.SOUTH);
+
         btnThemDiemXuatPhat = new JButton("Thêm Điểm Xuất Phát");
         txtTenTinhCanTim = new JTextField(20);
-        btnTimTheoTinh = new JButton("Tìm Theo Tỉnh");
-        btnDanhSach = new JButton("Danh Sách");
+        btnTimKiem = new JButton("Tìm kiếm theo tỉnh");
+        btnCapNhat = new JButton("Cập nhật điểm xuất phát");
         btnXoa = new JButton("Xoá");
         pnlGiaoDienThemDiemXuatPhatSouth.add(txtTenTinhCanTim);
-        pnlGiaoDienThemDiemXuatPhatSouth.add(btnTimTheoTinh);
+        pnlGiaoDienThemDiemXuatPhatSouth.add(btnTimKiem);
         pnlGiaoDienThemDiemXuatPhatSouth.add(btnThemDiemXuatPhat);
-        pnlGiaoDienThemDiemXuatPhatSouth.add(btnDanhSach);
+        pnlGiaoDienThemDiemXuatPhatSouth.add(btnCapNhat);
         pnlGiaoDienThemDiemXuatPhatSouth.add(btnXoa);
 
         tableDiemXuatPhat.addMouseListener(this);
         btnThemDiemXuatPhat.addActionListener(this);
-        btnTimTheoTinh.addActionListener(this);
-        btnDanhSach.addActionListener(this);
+        btnTimKiem.addActionListener(this);
+        btnCapNhat.addActionListener(this);
         btnXoa.addActionListener(this);
     }
 
@@ -149,10 +151,9 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
                     JOptionPane.showMessageDialog(this, "Trùng");
                 }
             }
-        } else if (o.equals(btnTimTheoTinh)) {
+        } else if (o.equals(btnTimKiem)) {
             String name = txtTenTinhCanTim.getText();
-
-            ArrayList<DiemXuatPhat> dsDiemXuatPhat = new ArrayList<DiemXuatPhat>();
+            List<DiemXuatPhat> dsDiemXuatPhat = new ArrayList<>();
             try {
                 if (name.length() > 0) {
                     dsDiemXuatPhat = diemXuatPhatDAO.getDiemXuatPhatTheoTinh(name);
@@ -175,7 +176,7 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
                 JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
 
             }
-        } else if (o.equals(btnDanhSach)) {
+        } else if (o.equals(btnCapNhat)) {
             modelDiemXuatPhat.setRowCount(0);
             for (DiemXuatPhat diemXuatPhat : diemXuatPhatDAO.getAllDiemXuatPhat()) {
                 modelDiemXuatPhat.addRow(new Object[]{
@@ -213,7 +214,7 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
         String tenTinh = txttenTinh.getText().trim();
 
         if (!(maDiemXuatPhat.length() > 0 && maDiemXuatPhat.matches("^(DXP)[0-9]{5}"))) {
-            JOptionPane.showMessageDialog(this, " Mã điểm xuất phát bắt đầu bằng 2 ký tự “DD”, theo sau là 6 ký tự là số");
+            JOptionPane.showMessageDialog(this, " Mã điểm xuất phát bắt đầu bằng 2 ký tự “DXP”, theo sau là 5 ký tự là số");
             return false;
         }
         if (!(tenDiemXuatPhat.length() > 0 && tenDiemXuatPhat.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$"))) {

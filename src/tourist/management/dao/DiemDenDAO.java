@@ -72,9 +72,9 @@ public class DiemDenDAO {
         Connection con = ConnectDB.getConnection();
         PreparedStatement statement = null;
         try {
-            String sql = "select * from DiemDen where tenDiemDen=?";
+            String sql = "select * from DiemDen where tenDiemDen LIKE ?";
             statement = con.prepareStatement(sql);
-            statement.setString(1, TenDiemDenCanTim);
+            statement.setString(1, "%" + TenDiemDenCanTim + "%");
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 String maDiemDen = rs.getString(1);
@@ -103,9 +103,9 @@ public class DiemDenDAO {
         Connection con = ConnectDB.getConnection();
         PreparedStatement statement = null;
         try {
-            String sql = "select * from DiemDen where tenTinh=?";
+            String sql = "select * from DiemDen where tenTinh LIKE ?";
             statement = con.prepareStatement(sql);
-            statement.setString(1, tenTinhCanTim);
+            statement.setString(1, "%" + tenTinhCanTim + "%");
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 String maDiemDen = rs.getString(1);
@@ -123,7 +123,6 @@ public class DiemDenDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
         }
         return dsDiemDen;
     }

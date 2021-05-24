@@ -40,6 +40,12 @@ public class ChuyenDiDAO {
         return danhSachChuyenDi;
     }
 
+    /**
+     *
+     * @param chuyenDi chuyến đi
+     * @return true nếu số dòng chèn > 0, ngược lại false
+     * @throws SQLIntegrityConstraintViolationException nếu chèn trùng mã
+     */
     public boolean createChuyenDi(ChuyenDi chuyenDi) throws SQLIntegrityConstraintViolationException {
         ConnectDB.getInstance();
         Connection connection = ConnectDB.getConnection();
@@ -69,8 +75,13 @@ public class ChuyenDiDAO {
         return rowEffected > 0;
     }
 
-    public ArrayList<ChuyenDi> getChuyenDiTheoTen(String TenDiemDenCanTim) {
-        ArrayList<ChuyenDi> dsChuyenDi = new ArrayList<ChuyenDi>();
+    /**
+     *
+     * @param TenDiemDenCanTim
+     * @return
+     */
+    public List<ChuyenDi> getChuyenDiTheoTen(String TenDiemDenCanTim) {
+        List<ChuyenDi> dsChuyenDi = new ArrayList<>();
         ConnectDB.getInstance();
         Connection con = ConnectDB.getConnection();
         PreparedStatement statement = null;
@@ -102,6 +113,34 @@ public class ChuyenDiDAO {
 
         }
         return dsChuyenDi;
+    }
+
+    /**
+     *
+     * @param maChuyenDi mã chuyến đi
+     * @return true nếu xóa thành công, false nếu xóa không thành công
+     */
+    public boolean xoaMaChuyenDi(String maChuyenDi) {
+        ConnectDB.getInstance();
+        Connection connection = ConnectDB.getConnection();
+        PreparedStatement statement = null;
+        int n = 0;
+        try {
+            statement = connection.prepareStatement("delete from DatVe where maChuyenDi = ? delete from ChuyenDi where maChuyenDi = ?");
+            statement.setString(1, maChuyenDi);
+            statement.setString(2, maChuyenDi);
+            n = statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert statement != null;
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return n > 0;
     }
 
 }

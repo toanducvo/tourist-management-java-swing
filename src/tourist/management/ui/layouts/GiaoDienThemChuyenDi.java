@@ -33,6 +33,7 @@ public class GiaoDienThemChuyenDi extends JFrame implements ActionListener, Mous
     private final JPanel pnlGiaoDienThemChuyenDi = new JPanel(new BorderLayout());
 
     private final ChuyenDiDAO chuyenDiDAO;
+    private final JButton btnXoaChuyenDi;
 
     public GiaoDienThemChuyenDi() {
 
@@ -104,16 +105,15 @@ public class GiaoDienThemChuyenDi extends JFrame implements ActionListener, Mous
         btnThemChuyenDi = new JButton("Thêm chuyến Đi");
         pnlGiaoDienThemChuyenDiSouth.add(btnThemChuyenDi);
         btnXoaRongChuyenDi = new JButton("Xóa rỗng");
+        btnXoaChuyenDi = new JButton("Xóa");
         pnlGiaoDienThemChuyenDiSouth.add(btnXoaRongChuyenDi);
-//<<<<<<< HEAD:src/tourist/management/ui/components/GiaoDienThemChuyenDi.java
+        pnlGiaoDienThemChuyenDiSouth.add(btnXoaChuyenDi);
 
-//        btnThemChuyenDi.addActionListener(this);
-//=======
 
         btnThemChuyenDi.addActionListener(this);
         btnXoaRongChuyenDi.addActionListener(this);
+        btnXoaChuyenDi.addActionListener(this);
         tableChuyenDi.addMouseListener(this);
-//>>>>>>> 3650b667edcb9d13ccce920701e7bc60a33f3b13:src/tourist/management/ui/layouts/GiaoDienThemChuyenDi.java
     }
 
     public JPanel createGiaoDienThemChuyenDi() {
@@ -151,8 +151,34 @@ public class GiaoDienThemChuyenDi extends JFrame implements ActionListener, Mous
                 } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
                     JOptionPane.showMessageDialog(this, "Trùng");
                 }
+
+                txtMaChuyenDi.setText("");
+                txtDiemXuatPhat.setText("");
+                txtDiemDen.setText("");
+                txtNgayGioDi.setText("");
+                txtNgayGioDen.setText("");
+                txtBienSo.setText("");
+                txtMaChuyenDi.requestFocus();
+                tableChuyenDi.clearSelection();
             }
 
+
+        } else if (o.equals(btnXoaChuyenDi)) {
+            int row = tableChuyenDi.getSelectedRow();
+            if (row < 0) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng cần xoá");
+            } else {
+                if (JOptionPane.showConfirmDialog(this, "Bạn có muốn xoá chuyến đi không!", "Cảnh Báo", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION) {
+                    try {
+                        String maChuyenDi = txtMaChuyenDi.getText();
+                        chuyenDiDAO.xoaMaChuyenDi(tableChuyenDi.getValueAt(row, 0).toString());
+                        modelChuyenDi.removeRow(row);
+
+                    } catch (Exception e2) {
+                        e2.printStackTrace();
+                    }
+                }
+            }
 
         }
     }

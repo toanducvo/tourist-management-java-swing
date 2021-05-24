@@ -35,6 +35,12 @@ public class DiemXuatPhatDAO {
         return danhSachDiemXuatPhat;
     }
 
+    /**
+     *
+     * @param diemXuatPhat điểm xuất phát
+     * @return true nếu thêm thành công, ngược lại false
+     * @throws SQLIntegrityConstraintViolationException nếu thêm trùng mã
+     */
     public boolean createDiemXuatPhat(DiemXuatPhat diemXuatPhat) throws SQLIntegrityConstraintViolationException {
         ConnectDB.getInstance();
         Connection connection = ConnectDB.getConnection();
@@ -61,21 +67,25 @@ public class DiemXuatPhatDAO {
         return rowEffected > 0;
     }
 
-    public ArrayList<DiemXuatPhat> getDiemXuatPhatTheoTinh(String tenTinhCanTim) {
-        ArrayList<DiemXuatPhat> dsDiemXuatPhat = new ArrayList<DiemXuatPhat>();
+    /**
+     *
+     * @param tenTinhCanTim tên tỉnh
+     * @return danh sách Điểm xuất phát
+     */
+    public List<DiemXuatPhat> getDiemXuatPhatTheoTinh(String tenTinhCanTim) {
+        List<DiemXuatPhat> dsDiemXuatPhat = new ArrayList<>();
         ConnectDB.getInstance();
-        Connection con = ConnectDB.getConnection();
+        Connection connection = ConnectDB.getConnection();
         PreparedStatement statement = null;
         try {
             String sql = "select * from DiemXuatPhat where tenTinh=?";
-            statement = con.prepareStatement(sql);
+            statement = connection.prepareStatement(sql);
             statement.setString(1, tenTinhCanTim);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 String maDiemXuatPhat = rs.getString(1);
                 String tenDiemXuatPhat = rs.getString(2);
                 String tenTinh = rs.getString(3);
-
                 DiemXuatPhat diemXuatPhat = new DiemXuatPhat(maDiemXuatPhat, tenDiemXuatPhat, tenTinh);
                 dsDiemXuatPhat.add(diemXuatPhat);
             }
@@ -83,17 +93,20 @@ public class DiemXuatPhatDAO {
             e.printStackTrace();
         } finally {
             try {
+                assert statement != null;
                 statement.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
         }
         return dsDiemXuatPhat;
     }
 
+    /**
+     * @param timMaDiemXuatPhat mã điểm xuất phát
+     * @return true nếu xóa thành công, ngược lại false
+     */
     public boolean xoaMaDiemXuatPhat(String timMaDiemXuatPhat) {
-
         ConnectDB.getInstance();
         Connection con = ConnectDB.getConnection();
         PreparedStatement statement = null;
@@ -105,8 +118,7 @@ public class DiemXuatPhatDAO {
             statement.setString(1, timMaDiemXuatPhat);
             statement.setString(2, timMaDiemXuatPhat);
             statement.setString(3, timMaDiemXuatPhat);
-            statement.executeUpdate();
-
+            n = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -115,10 +127,7 @@ public class DiemXuatPhatDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
         }
         return n > 0;
     }
-
-
 }

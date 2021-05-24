@@ -19,16 +19,16 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
     private final JTextField txtmaDiemDen;
     private final JTextField txttenDiemDen;
     private final JTextField txttenTinh;
-    private final JButton btnThemDiemDen;
     private final JTable tableDiemDen;
     private final DefaultTableModel modelDiemDen;
-    private final JButton btnDanhSach;
+    private final JButton btnCapNhat;
     private final DiemDenDAO diemDenDAO;
+    private final JLabel lblTimKiem;
+    private final JTextField txtTimKiem;
+    private final JButton btnTimKiem;
+    private final JComboBox<String> cboTimKiem;
+    private final JButton btnThemDiemDen;
     JPanel pnlGiaoDienThemDiemDen = new JPanel(new BorderLayout());
-    private final JButton btnTimDiemDen;
-    private final JTextField txtTimDiemDen;
-    private final JButton btnTimDiemDenTheoTinh;
-    private final JTextField txtTimDiemDenTheoTinh;
 
     public GiaoDienThemDiemDen() {
 
@@ -80,26 +80,25 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
         JPanel pnlGiaoDienThemDiemDenSouth = new JPanel();
         pnlGiaoDienThemDiemDenSouth.setPreferredSize(new Dimension(600, 50));
         pnlGiaoDienThemDiemDen.add(pnlGiaoDienThemDiemDenSouth, BorderLayout.SOUTH);
-        btnThemDiemDen = new JButton("Thêm Điểm Đến");
-        txtTimDiemDen = new JTextField(15);
-        btnTimDiemDen = new JButton("Tìm Điểm Đến");
-        txtTimDiemDenTheoTinh = new JTextField(15);
-        btnTimDiemDenTheoTinh = new JButton("Tìm Theo Tỉnh");
-        btnDanhSach = new JButton("Danh Sách");
+        txtTimKiem = new JTextField(15);
+        lblTimKiem = new JLabel("Tìm kiếm theo");
+        cboTimKiem = new JComboBox<>();
+        cboTimKiem.addItem("Điểm đến");
+        cboTimKiem.addItem("Theo tỉnh");
+        btnTimKiem = new JButton("Tìm kiếm");
+        btnThemDiemDen = new JButton("Thêm điểm đến");
+        btnCapNhat = new JButton("Cập nhật điểm đến");
 
-        pnlGiaoDienThemDiemDenSouth.add(txtTimDiemDen);
-        pnlGiaoDienThemDiemDenSouth.add(btnTimDiemDen);
-        pnlGiaoDienThemDiemDenSouth.add(txtTimDiemDenTheoTinh);
-        pnlGiaoDienThemDiemDenSouth.add(btnTimDiemDenTheoTinh);
-        pnlGiaoDienThemDiemDenSouth.add(btnThemDiemDen);
-        pnlGiaoDienThemDiemDenSouth.add(btnDanhSach);
+        pnlGiaoDienThemDiemDenSouth.add(txtTimKiem);
+        pnlGiaoDienThemDiemDenSouth.add(lblTimKiem);
+        pnlGiaoDienThemDiemDenSouth.add(cboTimKiem);
+        pnlGiaoDienThemDiemDenSouth.add(btnTimKiem);
+        pnlGiaoDienThemDiemDenSouth.add(btnCapNhat);
 
 
         tableDiemDen.addMouseListener(this);
-        btnThemDiemDen.addActionListener(this);
-        btnTimDiemDen.addActionListener(this);
-        btnTimDiemDenTheoTinh.addActionListener(this);
-        btnDanhSach.addActionListener(this);
+        btnTimKiem.addActionListener(this);
+        btnCapNhat.addActionListener(this);
     }
 
     public JPanel createGiaoDienThemDiemDen() {
@@ -152,59 +151,71 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
                     JOptionPane.showMessageDialog(this, "Trùng");
                 }
             }
-        } else if (o.equals(btnTimDiemDen)) {
-            String name = txtTimDiemDen.getText();
 
-            ArrayList<DiemDen> dsdiemDen = new ArrayList<DiemDen>();
-            try {
-                if (name.length() > 0) {
-                    dsdiemDen = diemDenDAO.getDiemDenTheoTen(name);
-                    DefaultTableModel tableModel = (DefaultTableModel) tableDiemDen.getModel();
-                    tableModel.setRowCount(0);
+        } else if (o.equals(btnTimKiem)) {
 
-                    for (DiemDen diemDen : dsdiemDen) {
-                        tableModel.addRow(new Object[]{
-                                diemDen.getMaDiemDen(),
-                                diemDen.getTenDiemDen(),
-                                diemDen.getTenTinh()
-                        });
+            int select = cboTimKiem.getSelectedIndex();
+            switch (select) {
+                case 0: {
+                    String name = txtTimKiem.getText();
+
+                    ArrayList<DiemDen> dsdiemDen = new ArrayList<DiemDen>();
+                    try {
+                        if (name.length() > 0) {
+                            dsdiemDen = diemDenDAO.getDiemDenTheoTen(name);
+                            DefaultTableModel tableModel = (DefaultTableModel) tableDiemDen.getModel();
+                            tableModel.setRowCount(0);
+
+                            for (DiemDen diemDen : dsdiemDen) {
+                                tableModel.addRow(new Object[]{
+                                        diemDen.getMaDiemDen(),
+                                        diemDen.getTenDiemDen(),
+                                        diemDen.getTenTinh()
+                                });
+                            }
+
+                            tableModel.fireTableDataChanged();
+                        }
+                    } catch (Exception e2) {
+                        // TODO: handle exception
+                        e2.printStackTrace();
+                        JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
+
                     }
-
-                    tableModel.fireTableDataChanged();
+                    break;
                 }
-            } catch (Exception e2) {
-                // TODO: handle exception
-                e2.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
+                case 1: {
+                    String name = txtTimKiem.getText();
 
-            }
-        } else if (o.equals(btnTimDiemDenTheoTinh)) {
-            String name = txtTimDiemDenTheoTinh.getText();
+                    ArrayList<DiemDen> dsdiemDen = new ArrayList<DiemDen>();
+                    try {
+                        if (name.length() > 0) {
+                            dsdiemDen = diemDenDAO.getDiemDenTheoTinh(name);
+                            DefaultTableModel tableModel = (DefaultTableModel) tableDiemDen.getModel();
+                            tableModel.setRowCount(0);
 
-            ArrayList<DiemDen> dsdiemDen = new ArrayList<DiemDen>();
-            try {
-                if (name.length() > 0) {
-                    dsdiemDen = diemDenDAO.getDiemDenTheoTinh(name);
-                    DefaultTableModel tableModel = (DefaultTableModel) tableDiemDen.getModel();
-                    tableModel.setRowCount(0);
+                            for (DiemDen diemDen : dsdiemDen) {
+                                tableModel.addRow(new Object[]{
+                                        diemDen.getMaDiemDen(),
+                                        diemDen.getTenDiemDen(),
+                                        diemDen.getTenTinh()
+                                });
+                            }
 
-                    for (DiemDen diemDen : dsdiemDen) {
-                        tableModel.addRow(new Object[]{
-                                diemDen.getMaDiemDen(),
-                                diemDen.getTenDiemDen(),
-                                diemDen.getTenTinh()
-                        });
+                            tableModel.fireTableDataChanged();
+                        }
+                    } catch (Exception e2) {
+                        // TODO: handle exception
+                        e2.printStackTrace();
+                        JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
+
                     }
-
-                    tableModel.fireTableDataChanged();
+                    break;
                 }
-            } catch (Exception e2) {
-                // TODO: handle exception
-                e2.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
-
             }
-        } else if (o.equals(btnDanhSach)) {
+
+
+        } else if (o.equals(btnCapNhat)) {
             modelDiemDen.setRowCount(0);
             for (DiemDen diemDen : diemDenDAO.getAllDiemDen()) {
                 modelDiemDen.addRow(new Object[]{
@@ -212,6 +223,7 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
                         diemDen.getTenDiemDen(),
                         diemDen.getTenTinh()
                 });
+                txtTimKiem.setText("");
             }
         }
 

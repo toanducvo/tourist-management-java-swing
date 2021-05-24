@@ -295,7 +295,7 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
 
     private void timChuyenDiTheodiemDen() {
         String name = txtTimDiemDen.getText();
-        ArrayList<ChuyenDi> dsChuyenDi = new ArrayList<>();
+        List<ChuyenDi> dsChuyenDi = new ArrayList<>();
         try {
             if (name.length() > 0) {
                 dsChuyenDi = chuyenDiDAO.getChuyenDiTheoTen(name);
