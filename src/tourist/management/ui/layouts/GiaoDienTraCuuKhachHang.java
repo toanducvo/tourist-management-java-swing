@@ -61,7 +61,7 @@ public class GiaoDienTraCuuKhachHang extends JFrame {
         pnlTraCuu = new JPanel();
         pnlTraCuu.setPreferredSize(new Dimension(getWidth(), 80));
         pnlTraCuu.setBorder(BorderFactory.createTitledBorder("Tra cứu khách hàng"));
-        txtTimKiem = new JTextField(20);
+        txtTimKiem = new JTextField(30);
         txtTimKiem.requestFocus();
         lblLoaiTimKiem = new JLabel("Tìm kiếm theo");
         cboLocTheoDieuKien = new JComboBox<>();
@@ -90,16 +90,21 @@ public class GiaoDienTraCuuKhachHang extends JFrame {
                 switch (selected) {
                     case 0: {
                         String timKiem = txtTimKiem.getText().trim();
-                        defaultTableModel.setRowCount(0);
-                        for (KhachHang khachHang : khachHangDAO.getKhachHangTheoTen(timKiem)) {
-                            defaultTableModel.addRow(parseKhachHang(khachHang));
-                        }
+                        if (!timKiem.isBlank()) {
+                            defaultTableModel.setRowCount(0);
+                            for (KhachHang khachHang : khachHangDAO.getKhachHangTheoTen(timKiem)) {
+                                defaultTableModel.addRow(parseKhachHang(khachHang));
+                            }
+                        } else return;
                         break;
                     }
                     case 1: {
                         String cmnd = txtTimKiem.getText().trim();
                         if (!Pattern.matches("\\d{12}|\\d{9}", cmnd)) {
                             JOptionPane.showMessageDialog(pnlTraCuu, "CMND không hợp lệ!");
+                            txtTimKiem.selectAll();
+                            txtTimKiem.requestFocus();
+                            return;
                         } else {
                             defaultTableModel.setRowCount(0);
                             for (KhachHang khachHang : khachHangDAO.getKhachHangTheoCMND(cmnd)) {
@@ -117,6 +122,9 @@ public class GiaoDienTraCuuKhachHang extends JFrame {
                             }
                         } catch (DateTimeParseException dateTimeParseException) {
                             JOptionPane.showMessageDialog(pnlTraCuu, "Ngày sinh không hợp lệ!");
+                            txtTimKiem.selectAll();
+                            txtTimKiem.requestFocus();
+                            return;
                         }
                         break;
                     }
