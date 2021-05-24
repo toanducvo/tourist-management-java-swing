@@ -35,9 +35,10 @@ public class GiaoDienTraCuuKhachHang extends JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        pnlDanhSach = new JPanel();
-        pnlDanhSach.setPreferredSize(new Dimension(getWidth(), 360));
+        pnlDanhSach = new JPanel(new BorderLayout());
+        pnlDanhSach.setPreferredSize(new Dimension(690, 360));
         pnlDanhSach.setBorder(BorderFactory.createTitledBorder("Danh sách khách hàng"));
+
         Object[] columnName = {
                 "Mã khách hàng",
                 "Họ khách hàng",
@@ -48,11 +49,14 @@ public class GiaoDienTraCuuKhachHang extends JFrame {
                 "Số điện thoại",
                 "Email"
         };
+
         defaultTableModel = new DefaultTableModel(columnName, 0);
         tblKhachHang = new JTable(defaultTableModel);
-        pnlDanhSach.add(new JScrollPane(tblKhachHang));
         tblKhachHang.setShowGrid(false);
         tblKhachHang.setRowHeight(20);
+
+        pnlDanhSach.add(new JScrollPane(tblKhachHang), BorderLayout.CENTER);
+
         khachHangDAO = new KhachHangDAO();
         for (KhachHang khachHang : khachHangDAO.getAllKhachHang()) {
             defaultTableModel.addRow(parseKhachHang(khachHang));
@@ -83,51 +87,48 @@ public class GiaoDienTraCuuKhachHang extends JFrame {
         add(pnlDanhSach, BorderLayout.CENTER);
         add(pnlTraCuu, BorderLayout.SOUTH);
 
-        btnTimKiem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selected = cboLocTheoDieuKien.getSelectedIndex();
-                switch (selected) {
-                    case 0: {
-                        String timKiem = txtTimKiem.getText().trim();
-                        if (!timKiem.isBlank()) {
-                            defaultTableModel.setRowCount(0);
-                            for (KhachHang khachHang : khachHangDAO.getKhachHangTheoTen(timKiem)) {
-                                defaultTableModel.addRow(parseKhachHang(khachHang));
-                            }
-                        } else return;
-                        break;
-                    }
-                    case 1: {
-                        String cmnd = txtTimKiem.getText().trim();
-                        if (!Pattern.matches("\\d{12}|\\d{9}", cmnd)) {
-                            JOptionPane.showMessageDialog(pnlTraCuu, "CMND không hợp lệ!");
-                            txtTimKiem.selectAll();
-                            txtTimKiem.requestFocus();
-                            return;
-                        } else {
-                            defaultTableModel.setRowCount(0);
-                            for (KhachHang khachHang : khachHangDAO.getKhachHangTheoCMND(cmnd)) {
-                                defaultTableModel.addRow(parseKhachHang(khachHang));
-                            }
+        btnTimKiem.addActionListener(e -> {
+            int selected = cboLocTheoDieuKien.getSelectedIndex();
+            switch (selected) {
+                case 0: {
+                    String timKiem = txtTimKiem.getText().trim();
+                    if (!timKiem.isBlank()) {
+                        defaultTableModel.setRowCount(0);
+                        for (KhachHang khachHang : khachHangDAO.getKhachHangTheoTen(timKiem)) {
+                            defaultTableModel.addRow(parseKhachHang(khachHang));
                         }
-                        break;
-                    }
-                    case 2: {
-                        try {
-                            LocalDate ngaySinh = LocalDate.parse(txtTimKiem.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                            defaultTableModel.setRowCount(0);
-                            for (KhachHang khachHang : khachHangDAO.getKhachHangTheoNgaySinh(ngaySinh)) {
-                                defaultTableModel.addRow(parseKhachHang(khachHang));
-                            }
-                        } catch (DateTimeParseException dateTimeParseException) {
-                            JOptionPane.showMessageDialog(pnlTraCuu, "Ngày sinh không hợp lệ!");
-                            txtTimKiem.selectAll();
-                            txtTimKiem.requestFocus();
-                            return;
+                    } else return;
+                    break;
+                }
+                case 1: {
+                    String cmnd = txtTimKiem.getText().trim();
+                    if (!Pattern.matches("\\d{12}|\\d{9}", cmnd)) {
+                        JOptionPane.showMessageDialog(pnlTraCuu, "CMND không hợp lệ!");
+                        txtTimKiem.selectAll();
+                        txtTimKiem.requestFocus();
+                        return;
+                    } else {
+                        defaultTableModel.setRowCount(0);
+                        for (KhachHang khachHang : khachHangDAO.getKhachHangTheoCMND(cmnd)) {
+                            defaultTableModel.addRow(parseKhachHang(khachHang));
                         }
-                        break;
                     }
+                    break;
+                }
+                case 2: {
+                    try {
+                        LocalDate ngaySinh = LocalDate.parse(txtTimKiem.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                        defaultTableModel.setRowCount(0);
+                        for (KhachHang khachHang : khachHangDAO.getKhachHangTheoNgaySinh(ngaySinh)) {
+                            defaultTableModel.addRow(parseKhachHang(khachHang));
+                        }
+                    } catch (DateTimeParseException dateTimeParseException) {
+                        JOptionPane.showMessageDialog(pnlTraCuu, "Ngày sinh không hợp lệ!");
+                        txtTimKiem.selectAll();
+                        txtTimKiem.requestFocus();
+                        return;
+                    }
+                    break;
                 }
             }
         });
@@ -136,6 +137,7 @@ public class GiaoDienTraCuuKhachHang extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 txtTimKiem.setText("");
+                txtTimKiem.requestFocus();
                 defaultTableModel.setRowCount(0);
                 for (KhachHang khachHang : khachHangDAO.getAllKhachHang()) {
                     defaultTableModel.addRow(parseKhachHang(khachHang));

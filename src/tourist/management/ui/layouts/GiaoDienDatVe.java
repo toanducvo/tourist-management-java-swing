@@ -189,7 +189,7 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
         } else if (o.equals(btnCapNhatChuyenDi)) {
             capNhatChuyenDi();
         } else if (o.equals(btnXemDanhSachKhachhang)) {
-            new GiaoDienKhachHang().setVisible(true);
+            new GiaoDienTraCuuKhachHang().setVisible(true);
         }
     }
 
