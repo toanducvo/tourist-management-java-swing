@@ -295,7 +295,6 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
 
     private void timChuyenDiTheodiemDen() {
         String name = txtTimDiemDen.getText();
-
         ArrayList<ChuyenDi> dsChuyenDi = new ArrayList<>();
         try {
             if (name.length() > 0) {
@@ -323,8 +322,7 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
 
     public void capNhatChuyenDi() {
         model.setRowCount(0);
-        List<ChuyenDi> danhSachChuyenDi = chuyenDiDAO.getAllChuyenDi();
-        for (ChuyenDi chuyenDi : danhSachChuyenDi) {
+        for (ChuyenDi chuyenDi : chuyenDiDAO.getAllChuyenDi()) {
             model.addRow(new Object[]{
                     chuyenDi.getMaChuyenDi(),
                     chuyenDi.getDiemXuatPhat().getMaDiemXuatPhat(),
