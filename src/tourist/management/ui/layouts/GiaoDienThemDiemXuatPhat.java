@@ -79,7 +79,7 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
 
 
         JPanel pnlGiaoDienThemDiemXuatPhatSouth = new JPanel();
-        pnlGiaoDienThemDiemXuatPhatSouth.setPreferredSize(new Dimension(600, 50));
+        pnlGiaoDienThemDiemXuatPhatSouth.setPreferredSize(new Dimension(600, 70));
         pnlGiaoDienThemDiemXuatPhat.add(pnlGiaoDienThemDiemXuatPhatSouth, BorderLayout.SOUTH);
 
         btnThemDiemXuatPhat = new JButton("Thêm Điểm Xuất Phát");

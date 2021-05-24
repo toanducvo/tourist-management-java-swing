@@ -79,7 +79,7 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
 
 
         JPanel pnlGiaoDienThemDiemDenSouth = new JPanel();
-        pnlGiaoDienThemDiemDenSouth.setPreferredSize(new Dimension(600, 50));
+        pnlGiaoDienThemDiemDenSouth.setPreferredSize(new Dimension(600, 70));
         pnlGiaoDienThemDiemDen.add(pnlGiaoDienThemDiemDenSouth, BorderLayout.SOUTH);
         txtTimKiem = new JTextField(15);
         lblTimKiem = new JLabel("Tìm kiếm theo");
