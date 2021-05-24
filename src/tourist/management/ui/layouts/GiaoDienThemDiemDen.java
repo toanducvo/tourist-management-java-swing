@@ -14,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GiaoDienThemDiemDen extends JFrame implements MouseListener, ActionListener {
     private final JTextField txtmaDiemDen;
@@ -93,11 +94,13 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
         pnlGiaoDienThemDiemDenSouth.add(lblTimKiem);
         pnlGiaoDienThemDiemDenSouth.add(cboTimKiem);
         pnlGiaoDienThemDiemDenSouth.add(btnTimKiem);
+        pnlGiaoDienThemDiemDenSouth.add(btnThemDiemDen);
         pnlGiaoDienThemDiemDenSouth.add(btnCapNhat);
 
 
         tableDiemDen.addMouseListener(this);
         btnTimKiem.addActionListener(this);
+        btnThemDiemDen.addActionListener(this);
         btnCapNhat.addActionListener(this);
     }
 
@@ -137,9 +140,7 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
                 String maDiemDen = txtmaDiemDen.getText();
                 String tenDiemDen = txttenDiemDen.getText();
                 String tenTinh = txttenTinh.getText();
-
                 DiemDen diemDen = new DiemDen(maDiemDen, tenDiemDen, tenTinh);
-
                 try {
                     diemDenDAO.createDiemDen(diemDen);
                     modelDiemDen.addRow(new Object[]{
@@ -176,18 +177,15 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
 
                             tableModel.fireTableDataChanged();
                         }
-                    } catch (Exception e2) {
-                        // TODO: handle exception
-                        e2.printStackTrace();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
                         JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
-
                     }
                     break;
                 }
                 case 1: {
                     String name = txtTimKiem.getText();
-
-                    ArrayList<DiemDen> dsdiemDen = new ArrayList<DiemDen>();
+                    List<DiemDen> dsdiemDen = new ArrayList<>();
                     try {
                         if (name.length() > 0) {
                             dsdiemDen = diemDenDAO.getDiemDenTheoTinh(name);
@@ -204,11 +202,9 @@ public class GiaoDienThemDiemDen extends JFrame implements MouseListener, Action
 
                             tableModel.fireTableDataChanged();
                         }
-                    } catch (Exception e2) {
-                        // TODO: handle exception
-                        e2.printStackTrace();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
                         JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ");
-
                     }
                     break;
                 }
