@@ -4,6 +4,7 @@ import tourist.management.database.ConnectDB;
 import tourist.management.entity.KhachHang;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +90,119 @@ public class KhachHangDAO {
         try {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, maKhachHang);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                danhSachKhachHang.add(
+                        new KhachHang(
+                                resultSet.getString("maKhachHang"),
+                                resultSet.getString("hoKhachHang"),
+                                resultSet.getString("tenKhachHang"),
+                                resultSet.getBoolean("gioiTinh"),
+                                resultSet.getDate("ngaySinh").toLocalDate(),
+                                resultSet.getString("SoCMND"),
+                                resultSet.getString("soDienThoai"),
+                                resultSet.getString("email")
+                        )
+                );
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        } finally {
+            try {
+                assert preparedStatement != null;
+                preparedStatement.close();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
+        return danhSachKhachHang;
+    }
+
+    public List<KhachHang> getKhachHangTheoTen(String tenKhachHang) {
+        List<KhachHang> danhSachKhachHang = new ArrayList<>();
+        ConnectDB.getInstance();
+        Connection connection = ConnectDB.getConnection();
+        String sql = "SELECT * FROM KhachHang WHERE tenKhachHang LIKE ?";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, tenKhachHang);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                danhSachKhachHang.add(
+                        new KhachHang(
+                                resultSet.getString("maKhachHang"),
+                                resultSet.getString("hoKhachHang"),
+                                resultSet.getString("tenKhachHang"),
+                                resultSet.getBoolean("gioiTinh"),
+                                resultSet.getDate("ngaySinh").toLocalDate(),
+                                resultSet.getString("SoCMND"),
+                                resultSet.getString("soDienThoai"),
+                                resultSet.getString("email")
+                        )
+                );
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        } finally {
+            try {
+                assert preparedStatement != null;
+                preparedStatement.close();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
+        return danhSachKhachHang;
+    }
+
+    public List<KhachHang> getKhachHangTheoNgaySinh(LocalDate ngaySinh) {
+        List<KhachHang> danhSachKhachHang = new ArrayList<>();
+        ConnectDB.getInstance();
+        Connection connection = ConnectDB.getConnection();
+        String sql = "SELECT * FROM KhachHang WHERE DAY(ngaySinh) = ? AND MONTH(ngaySinh) = ? AND YEAR(ngaySinh) = ?";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, ngaySinh.getDayOfMonth());
+            preparedStatement.setInt(2, ngaySinh.getMonth().getValue());
+            preparedStatement.setInt(3, ngaySinh.getYear());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                danhSachKhachHang.add(
+                        new KhachHang(
+                                resultSet.getString("maKhachHang"),
+                                resultSet.getString("hoKhachHang"),
+                                resultSet.getString("tenKhachHang"),
+                                resultSet.getBoolean("gioiTinh"),
+                                resultSet.getDate("ngaySinh").toLocalDate(),
+                                resultSet.getString("SoCMND"),
+                                resultSet.getString("soDienThoai"),
+                                resultSet.getString("email")
+                        )
+                );
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        } finally {
+            try {
+                assert preparedStatement != null;
+                preparedStatement.close();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
+        return danhSachKhachHang;
+    }
+
+    public List<KhachHang> getKhachHangTheoCMND(String cmnd) {
+        List<KhachHang> danhSachKhachHang = new ArrayList<>();
+        ConnectDB.getInstance();
+        Connection connection = ConnectDB.getConnection();
+        String sql = "SELECT * FROM KhachHang WHERE soCMND = ?";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, cmnd);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 danhSachKhachHang.add(
