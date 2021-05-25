@@ -15,7 +15,7 @@ public class KhachHangDAO {
      * @return true nếu chèn thành công, ngược lại false
      * @throws SQLIntegrityConstraintViolationException nếu chèn trùng mã khách hàng
      */
-    public boolean createKhachHang(KhachHang khachHang) throws SQLIntegrityConstraintViolationException {
+    public boolean createKhachHang(KhachHang khachHang)  {
         ConnectDB.getInstance();
         Connection con = ConnectDB.getConnection();
         PreparedStatement statement = null;
@@ -32,8 +32,6 @@ public class KhachHangDAO {
             statement.setString(8, khachHang.getEmail());
             rowEffected = statement.executeUpdate();
         } catch (SQLException sqlException) {
-            if (sqlException instanceof SQLIntegrityConstraintViolationException)
-                throw new SQLIntegrityConstraintViolationException();
             sqlException.printStackTrace();
         } finally {
             try {

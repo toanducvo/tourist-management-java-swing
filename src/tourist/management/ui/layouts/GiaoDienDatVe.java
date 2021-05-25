@@ -15,7 +15,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -263,20 +262,16 @@ public class GiaoDienDatVe extends JFrame implements ActionListener {
                     LocalDateTime.now()
             );
 
-            try {
-                khachHangDAO.createKhachHang(khachHang);
-            } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
-//                JOptionPane.showMessageDialog(this, "Trùng");
-            } finally {
-                try {
-                    datVeDAO.createDatVe(datVe);
-                    JOptionPane.showMessageDialog(this, "Đặt vé thành công!");
-                } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
-                    JOptionPane.showMessageDialog(this, "Trùng");
-                }
-            }
+
+            List<KhachHang> danhSachKhachHang = khachHangDAO.getAllKhachHang();
+            if (danhSachKhachHang.contains(khachHang))
+                return;
+            khachHangDAO.createKhachHang(khachHang);
+            datVeDAO.createDatVe(datVe);
+            JOptionPane.showMessageDialog(this, "Đặt vé thành công!");
             xoaRongHandler();
-        } else {
+        }
+        else{
             JOptionPane.showMessageDialog(this, "Chưa chọn chuyến đi!");
         }
     }
