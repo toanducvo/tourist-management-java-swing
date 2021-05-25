@@ -29,7 +29,6 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
     private final JButton btnCapNhat;
 
     private final DiemXuatPhatDAO diemXuatPhatDAO;
-    private final JButton btnXoa;
     JPanel pnlGiaoDienThemDiemXuatPhat = new JPanel(new BorderLayout());
 
     public GiaoDienThemDiemXuatPhat() {
@@ -86,18 +85,15 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
         txtTenTinhCanTim = new JTextField(20);
         btnTimKiem = new JButton("Tìm kiếm theo tỉnh");
         btnCapNhat = new JButton("Cập nhật điểm xuất phát");
-        btnXoa = new JButton("Xoá");
         pnlGiaoDienThemDiemXuatPhatSouth.add(txtTenTinhCanTim);
         pnlGiaoDienThemDiemXuatPhatSouth.add(btnTimKiem);
         pnlGiaoDienThemDiemXuatPhatSouth.add(btnThemDiemXuatPhat);
         pnlGiaoDienThemDiemXuatPhatSouth.add(btnCapNhat);
-        pnlGiaoDienThemDiemXuatPhatSouth.add(btnXoa);
 
         tableDiemXuatPhat.addMouseListener(this);
         btnThemDiemXuatPhat.addActionListener(this);
         btnTimKiem.addActionListener(this);
         btnCapNhat.addActionListener(this);
-        btnXoa.addActionListener(this);
     }
 
     public JPanel createGiaoDienThemDiemXuatPhat() {
@@ -185,27 +181,7 @@ public class GiaoDienThemDiemXuatPhat extends JFrame implements MouseListener, A
                         diemXuatPhat.getTenTinh()
                 });
             }
-        } else if (o.equals(btnXoa)) {
-            int row = tableDiemXuatPhat.getSelectedRow();
-            if (row < 0) {
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng cần xoá ");
-            } else {
-                if (JOptionPane.showConfirmDialog(this, "Bạn có muốn xoá không!", "Cảnh Báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    try {
-
-                        String ma = txtmaDiemXuatPhat.getText();
-                        diemXuatPhatDAO.xoaMaDiemXuatPhat(tableDiemXuatPhat.getValueAt(row, 0).toString());
-                        modelDiemXuatPhat.removeRow(row);
-
-
-                    } catch (Exception e2) {
-                        // TODO: handle exception
-                        e2.printStackTrace();
-                    }
-                }
-            }
         }
-
     }
 
     private boolean ktRangBuoc() {
