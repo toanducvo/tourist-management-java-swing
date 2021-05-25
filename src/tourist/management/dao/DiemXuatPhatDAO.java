@@ -101,33 +101,4 @@ public class DiemXuatPhatDAO {
         }
         return dsDiemXuatPhat;
     }
-
-    /**
-     * @param timMaDiemXuatPhat mã điểm xuất phát
-     * @return true nếu xóa thành công, ngược lại false
-     */
-    public boolean xoaMaDiemXuatPhat(String timMaDiemXuatPhat) {
-        ConnectDB.getInstance();
-        Connection con = ConnectDB.getConnection();
-        PreparedStatement statement = null;
-        int n = 0;
-        try {
-            String sql = "delete from DatVe where maChuyenDi =?"
-                    + "delete from ChuyenDi where maDiemXuatPhat ='?"
-                    + "delete from DiemXuatPhat where maDiemXuatPhat=? ";
-            statement.setString(1, timMaDiemXuatPhat);
-            statement.setString(2, timMaDiemXuatPhat);
-            statement.setString(3, timMaDiemXuatPhat);
-            n = statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return n > 0;
-    }
 }
