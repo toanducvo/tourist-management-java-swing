@@ -151,15 +151,7 @@ public class GiaoDienThemChuyenDi extends JFrame implements ActionListener, Mous
                 } catch (SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
                     JOptionPane.showMessageDialog(this, "Trùng");
                 }
-
-                txtMaChuyenDi.setText("");
-                txtDiemXuatPhat.setText("");
-                txtDiemDen.setText("");
-                txtNgayGioDi.setText("");
-                txtNgayGioDen.setText("");
-                txtBienSo.setText("");
-                txtMaChuyenDi.requestFocus();
-                tableChuyenDi.clearSelection();
+               xoaRong();
             }
 
 
@@ -179,7 +171,10 @@ public class GiaoDienThemChuyenDi extends JFrame implements ActionListener, Mous
                     }
                 }
             }
-
+            xoaRong();
+        }
+        else if (o.equals(btnXoaRongChuyenDi)) {
+            xoaRong();
         }
     }
 
@@ -191,9 +186,18 @@ public class GiaoDienThemChuyenDi extends JFrame implements ActionListener, Mous
             JOptionPane.showMessageDialog(this, " Mã chuyến đi bắt đầu bằng 2 ký tự “CD”, theo sau là 6 ký tự là số");
             return false;
         }
-
         return true;
+    }
 
+    private void xoaRong(){
+        txtMaChuyenDi.setText("");
+        txtDiemXuatPhat.setText("");
+        txtDiemDen.setText("");
+        txtNgayGioDen.setText("");
+        txtNgayGioDi.setText("");
+        txtBienSo.setText("");
+        txtMaChuyenDi.requestFocus();
+        tableChuyenDi.clearSelection();
     }
 
     @Override

@@ -17,7 +17,7 @@ public class DatVeDAO {
      * @return true nếu đặt vé (số dòng chèn vào bảng khác 0), ngược lại false
      * @throws SQLIntegrityConstraintViolationException nếu không tồn tại các khóa ngoại liên kết
      */
-    public boolean createDatVe(DatVe datVe) throws SQLIntegrityConstraintViolationException {
+    public boolean createDatVe(DatVe datVe) {
         ConnectDB.getInstance();
         Connection connection = ConnectDB.getConnection();
         PreparedStatement statement = null;
@@ -30,8 +30,6 @@ public class DatVeDAO {
             statement.setTimestamp(4, Timestamp.valueOf(datVe.getNgayDatVe()));
             rowEffected = statement.executeUpdate();
         } catch (SQLException sqlException) {
-            if (sqlException instanceof SQLIntegrityConstraintViolationException)
-                throw new SQLIntegrityConstraintViolationException();
             sqlException.printStackTrace();
         } finally {
             try {
